@@ -8,17 +8,17 @@ import '../../Backend/User_data.dart';
 
 // ignore: must_be_immutable
 class SlideImageC extends StatelessWidget {
-  int startImg;
-  String namealbumC;
+  var namealbumC;
+  var selectpicC;
 
-  SlideImageC({required this.namealbumC, required this.startImg});
+  SlideImageC({required this.namealbumC, required this.selectpicC});
 
   Widget build(BuildContext context) {
-    print(this.namealbumC);
+    print(this.selectpicC);
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text(this.namealbumC,
+          title: Text("Cloud",
               style: TextStyle(
                 color: MyStyle().blackColor,
               )),
@@ -58,7 +58,7 @@ class SlideImageC extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => FirstState(
-                          page: 0,
+                          page: 2,
                           user: user,
                           listimageshow: listimageshow,
                           ListImgCloud: ListImgCloud)));
@@ -66,7 +66,7 @@ class SlideImageC extends StatelessWidget {
             },
           ),
         ),
-        body: Body(startImg: startImg),
+        body: Body(startImg: 1),
       ),
     );
   }
