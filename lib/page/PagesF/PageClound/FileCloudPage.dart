@@ -231,7 +231,15 @@ class _GridItemCloud extends StatelessWidget {
             image: imageProvider,
             fit: BoxFit.cover,
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SlideImageC(
+                              namealbumC: "cloud",
+                              selectpicC: img,
+                            )));
+              },
             ));
       },
       placeholder: (context, url) => CircularProgressIndicator(),

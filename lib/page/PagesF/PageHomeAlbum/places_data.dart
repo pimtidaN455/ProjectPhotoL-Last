@@ -15,7 +15,61 @@ class list_album {
     use_API UseApi = new use_API();
     print('APIIIIIIIIIIIII');
     var imageall = (await UseApi.getPhotoFromAPI());
-    print((await UseApi.getPhotoFromAPI()).runtimeType);
+    //print((await UseApi.getPhotoFromAPI()).runtimeType);
+
+    if ((await imageall.length) != 0) {
+      for (var Key in (await imageall.keys)) {
+        DBHelper db = DBHelper();
+        var db2 = await db.checkDatabase();
+        var dataalbum = {
+          "NAMEALBUM": await imageall[Key]["datafolder"]["Name"],
+          "DESCRIPTIONALBUM": await imageall[Key]["datafolder"]["Description"],
+          "IDENTITYALBUM": await imageall[Key]["datafolder"]["Identity"],
+          "KEYWORDALBUM": await imageall[Key]["datafolder"]["Keyword"]
+        };
+        await db.saveAlbum(await dataalbum, await db2);
+        var check = false;
+        if (await imageall[Key].length == 2) {
+          print("อิมเมดคีย์");
+          print(imageall[Key]);
+          for (var photo in (await imageall[Key]["Photo"].keys)) {
+            if (check == false) {
+              print(
+                  "------------------------]]]]]]]]]]]]]]]][[[[[[[[[[[[[----------------");
+              print(Key);
+              print(imageall[Key]["Photo"][photo]["AddressImage"]);
+              print(
+                  "------------------------]]]]]]]]]]]]]]]][[[[[[[[[[[[[----------------");
+              var mapAlbum = {
+                'Namebum': Key,
+                'img': await imageall[Key]["Photo"][photo]["AddressImage"],
+              };
+              listimageshow.add(await mapAlbum);
+            }
+
+            Photo pt = await new Photo(
+                photo,
+                await imageall[Key]["Photo"][photo]["Namephoto"],
+                await imageall[Key]["Photo"][photo]["AddressImage"],
+                await imageall[Key]["Photo"][photo]["Keyword"],
+                await imageall[Key]["Photo"][photo]["Description"],
+                await imageall[Key]["Photo"][photo]["Fixed_Album"].toString(),
+                await imageall[Key]["Photo"][photo]["Cloud_Storage"],
+                Key);
+            await db.savePhoto(await pt, await db2);
+          }
+        }
+        check = true;
+      }
+    }
+    return await listimage;
+  }
+
+  getimagefrom_apilogin(var token) async {
+    use_API UseApi = new use_API();
+    print('APIIIIIIIIIIIII');
+    var imageall = (await UseApi.getPhotoFromAPIlogin(token));
+    //print((await UseApi.getPhotoFromAPI()).runtimeType);
 
     if ((await imageall.length) != 0) {
       for (var Key in (await imageall.keys)) {

@@ -48,11 +48,11 @@ class user_file {
       print(dir);
       File filepath_W = new File(dir.path + "/client_data.json");
       bool fileExists = filepath_W.existsSync();
-      //  print("LLLLLLL");
+      print("LLLLLLL");
       if (fileExists) {
         //   print("ggg");
         // read file
-        // print("TTTTTTTTTTTTT");
+
         var data_json = jsonDecode(filepath_W.readAsStringSync());
         print(data_json);
         //  print("JJJJJJ");

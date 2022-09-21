@@ -40,7 +40,7 @@ void main() async {
   ///////////////////////////
 
   print("ลิสอิมเมดคาวววววว");
-  print(await ListImgCloud[0].gettoString());
+  //print(await ListImgCloud[0].gettoString());
 
   DBHelper db = DBHelper();
 
@@ -99,8 +99,8 @@ class _MyAppState extends State<MyApp> {
     var page_material;
     print("---------------AAAAAAA--------------");
     print(listimageshow);
-    print(ListImgCloud[0].gettoString());
-    print(ListImgCloud[0].geturlimage());
+    // print(ListImgCloud[0].gettoString());
+    //print(ListImgCloud[0].geturlimage());
     if (user.Login) {
       //if (i) {
       page_material = FirstState(

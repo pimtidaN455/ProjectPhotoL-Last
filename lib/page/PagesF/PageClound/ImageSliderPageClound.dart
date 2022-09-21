@@ -1,6 +1,112 @@
 import 'package:flutter/material.dart';
 import 'package:project_photo_learn/Object/imagecloud.dart';
 import 'package:project_photo_learn/my_style.dart';
+import 'package:project_photo_learn/page/PagesF/PageClound/FileCloudPage.dart';
+import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/places_data.dart';
+import 'package:project_photo_learn/page/PagesF/first.dart';
+import 'package:project_photo_learn/page/Start/StartPage.dart';
+
+import '../../Backend/User_data.dart';
+
+// ignore: must_be_immutable
+class SlideImageC extends StatelessWidget {
+  var namealbumC;
+  var selectpicC;
+
+  SlideImageC({required this.namealbumC, required this.selectpicC});
+
+  Widget build(BuildContext context) {
+    print(this.selectpicC);
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(namealbumC,
+              style: TextStyle(
+                color: MyStyle().blackColor,
+              )),
+          centerTitle: true,
+          backgroundColor: MyStyle().whiteColor,
+          automaticallyImplyLeading: true,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: MyStyle().blackColor,
+            ),
+            onPressed: () async {
+              user_file user0 = new user_file();
+
+              await user0.getdata_user_file();
+              var user = await user0;
+              var ListImgCloud;
+              var listimageshow;
+
+              //
+
+              if (await user.Login) {
+                list_album la = new list_album();
+                var ListImageDevice = await la.getimagefrom_api();
+                print(
+                    'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
+                print(await la.listimageshow);
+                listimagecloud listimgC = new listimagecloud();
+                ListImgCloud = await listimgC.getimagefrom_api();
+                print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
+                for (int i = 0; i < ListImgCloud.length; i++) {
+                  print(await ListImgCloud[i].gettoString());
+                }
+              }
+              //แก้ได้ละ
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FilePic(
+                            ListImgCloud: ListImgCloud,
+                          )));
+              print("ส่งชื่ออัลบั้มไปที่ ShowImage" + this.namealbumC);
+            },
+          ),
+        ),
+        body: Body(startImg: selectpicC),
+      ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class Body extends StatefulWidget {
+  var startImg;
+  Body({required this.startImg});
+
+  @override
+  State<Body> createState() => _Body(startImg: startImg);
+}
+
+class _Body extends State<Body> {
+  var startImg;
+  _Body({required this.startImg});
+  final PageController controller = PageController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: InteractiveViewer(
+            panEnabled: false, // Set it to false
+            boundaryMargin: EdgeInsets.all(100),
+            minScale: 0.5,
+            maxScale: 2,
+            child: Image.network(
+              startImg,
+              width: 500,
+              height: 500,
+              fit: BoxFit.cover,
+            )));
+  }
+}
+
+
+/*import 'package:flutter/material.dart';
+import 'package:project_photo_learn/Object/imagecloud.dart';
+import 'package:project_photo_learn/my_style.dart';
 import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/places_data.dart';
 import 'package:project_photo_learn/page/PagesF/first.dart';
 
@@ -181,3 +287,4 @@ class _Body extends State<Body> {
     );
   }
 }
+*/

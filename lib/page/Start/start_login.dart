@@ -179,7 +179,7 @@ class _StartloginState extends State<Startlogin> {
 
               if (await user.Login) {
                 list_album la = new list_album();
-                var ListImageDevice = await la.getimagefrom_api();
+                await la.getimagefrom_apilogin(await user.IDuser);
                 print(
                     'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
                 print(await la.listimageshow);

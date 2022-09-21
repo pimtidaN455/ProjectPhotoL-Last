@@ -303,7 +303,7 @@ class use_API {
   }
 
   getPhotoFromAPI() async {
-    user_file user_file_ = new user_file();
+    user_file user_file_ = await new user_file();
     await user_file_.getdata_user_file();
     final http.Response response = await http.post(
       Uri.parse("http://10.0.2.2:8000/DataAlbum/"),
@@ -311,6 +311,29 @@ class use_API {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{'tokenID': await user_file_.IDuser}),
+    );
+    if (response.statusCode == 200) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      print("DDDDDDDDDDDDDDDDDDDDDDDDDWSSSSSSSSSSSSs");
+      // print(jsonDecode(response.body));
+      return ((await jsonDecode(response.body))['message']);
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      throw Exception('Failed to create album.');
+    }
+  }
+
+  getPhotoFromAPIlogin(var token) async {
+    //user_file user_file_ = await new user_file();
+    //await user_file_.getdata_user_file();
+    final http.Response response = await http.post(
+      Uri.parse("http://10.0.2.2:8000/DataAlbum/"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{'tokenID': token}),
     );
     if (response.statusCode == 200) {
       // If the server did return a 201 CREATED response,
