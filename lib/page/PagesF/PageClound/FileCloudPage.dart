@@ -12,6 +12,7 @@ import 'package:project_photo_learn/my_style.dart';
 import 'package:project_photo_learn/page/Backend/Use_Api.dart';
 import 'package:project_photo_learn/page/Backend/User_data.dart';
 import 'package:project_photo_learn/page/PagesF/PageClound/ImageSliderPageClound.dart';
+import 'package:project_photo_learn/page/PagesF/PageClound/SelectCloud.dart';
 import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/places_data.dart';
 import 'dart:typed_data';
 import 'dart:convert';
@@ -174,24 +175,74 @@ class _MyAppState5 extends State<FilePic> {
                   }),
               IconButton(
                 icon: Icon(
+                  Icons.restore,
+                  color: MyStyle().blackColor,
+                ),
+                onPressed: () async {
+                  user_file user = await new user_file();
+                  await user.getdata_user_file();
+                  var user0 = await user;
+                  var ListImgCloud0;
+                  var listimageshow;
+
+                  //
+
+                  if (await user.Login) {
+                    list_album la = new list_album();
+                    var ListImageDevice = await la.getimagefrom_api();
+                    print(
+                        'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
+                    print(await la.listimageshow);
+                    listimagecloud listimgC = new listimagecloud();
+                    ListImgCloud0 = await listimgC.getimagefrom_api();
+                    print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
+                    for (int i = 0; i < ListImgCloud0.length; i++) {
+                      print(await ListImgCloud0[i].geturlimage());
+                    }
+                  }
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FirstState(
+                              page: 2,
+                              user: user,
+                              listimageshow: listimageshow,
+                              ListImgCloud: ListImgCloud0)));
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.file_download_outlined,
+                  color: MyStyle().blackColor,
+                ),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: Icon(
                   Icons.delete_outlined,
                   color: MyStyle().deleteColor,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  ////////////////
+
+                  ///
+                  ///
+                  ///
+                },
               ),
             ],
             automaticallyImplyLeading: false,
           ),
-          body: GridView.extent(
-            maxCrossAxisExtent: 200,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
+          body: GridView.count(
+            crossAxisCount: 3,
+            mainAxisSpacing: 4,
+            crossAxisSpacing: 4,
             padding: EdgeInsets.all(8),
             childAspectRatio: 1 / 1.2,
             children: <Widget>[
               if (ListImgCloud != null)
                 for (int i = 0; i < ListImgCloud.length; i++)
-                  _GridItemCloud(
+                  _ShowImageCloud(
                     ListImgCloud[i].getnameimage() as String,
                     img: ListImgCloud[i].geturlimage() as String,
                     onTap: () => checkOption(i + 1),
@@ -204,10 +255,11 @@ class _MyAppState5 extends State<FilePic> {
   }
 }
 
-class _GridItemCloud extends StatelessWidget {
-  const _GridItemCloud(
+class _ShowImageCloud extends StatelessWidget {
+  const _ShowImageCloud(
     this.title, {
     Key? key,
+    //required this.nameimg,
     required this.img,
     required this.selectbum,
     required this.onTap,
@@ -215,6 +267,7 @@ class _GridItemCloud extends StatelessWidget {
   }) : super(key: key);
 
   final String title;
+  //final String nameimg;
   final String img;
   final int selectbum;
   final VoidCallback onTap;
@@ -236,16 +289,15 @@ class _GridItemCloud extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => SlideImageC(
-                              namealbumC: "cloud",
+                              namealbumC: title,
                               selectpicC: img,
                             )));
               },
             ));
       },
-      placeholder: (context, url) => CircularProgressIndicator(),
+      placeholder: (context, url) => Container(
+          alignment: Alignment.center, child: CircularProgressIndicator()),
       errorWidget: (context, url, error) {
-        // This was the reason for exception being triggered and rendered!
-        debugPrint(error); // TODO: Remove this line!
         return Center(
           child: Text(
             'Error',

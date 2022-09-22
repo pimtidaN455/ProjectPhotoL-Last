@@ -200,6 +200,7 @@ class Add_Album_PageState extends State<Add_Album_Page> {
       child: TextFormField(
         controller: Add_Name_SubJ,
         decoration: InputDecoration(
+            border: OutlineInputBorder(),
             suffixIcon: IconButton(
               onPressed: () {
                 Add_Name_SubJ.clear();

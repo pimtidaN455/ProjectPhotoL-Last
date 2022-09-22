@@ -79,6 +79,29 @@ class Allimages extends State<ShowImage> {
             ),
           ),
           automaticallyImplyLeading: false,
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.drive_file_move_outline,
+                color: MyStyle().blackColor,
+              ),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.delete_outlined,
+                color: MyStyle().deleteColor,
+              ),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.settings,
+                color: MyStyle().blackColor,
+              ),
+              onPressed: () {},
+            ),
+          ],
         ),
         body: GridView.count(
           crossAxisCount: 3,

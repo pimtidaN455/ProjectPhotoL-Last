@@ -1,290 +1,172 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:project_photo_learn/Object/imagecloud.dart';
 import 'package:project_photo_learn/my_style.dart';
+import 'package:project_photo_learn/page/Backend/User_data.dart';
 import 'package:project_photo_learn/page/PagesF/PageClound/FileCloudPage.dart';
 import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/places_data.dart';
-import 'package:project_photo_learn/page/PagesF/first.dart';
-import 'package:project_photo_learn/page/Start/StartPage.dart';
 
-import '../../Backend/User_data.dart';
-
-// ignore: must_be_immutable
 class SlideImageC extends StatelessWidget {
+  final String title = 'Interactive Viewer';
   var namealbumC;
   var selectpicC;
-
   SlideImageC({required this.namealbumC, required this.selectpicC});
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+        title: title,
+        home: SlideImageC2(
+            title: title,
+            namealbumC: this.namealbumC,
+            selectpicC: this.selectpicC),
+      );
+}
 
-  Widget build(BuildContext context) {
-    print(this.selectpicC);
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(namealbumC,
-              style: TextStyle(
-                color: MyStyle().blackColor,
-              )),
-          centerTitle: true,
-          backgroundColor: MyStyle().whiteColor,
-          automaticallyImplyLeading: true,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios_new,
-              color: MyStyle().blackColor,
-            ),
-            onPressed: () async {
-              user_file user0 = new user_file();
+class SlideImageC2 extends StatefulWidget {
+  final String title;
+  final String namealbumC;
+  final String selectpicC;
+  const SlideImageC2(
+      {required this.title,
+      required this.namealbumC,
+      required this.selectpicC});
 
-              await user0.getdata_user_file();
-              var user = await user0;
-              var ListImgCloud;
-              var listimageshow;
+  @override
+  _MainPageState createState() =>
+      _MainPageState(namealbumC: namealbumC, selectpicC: selectpicC);
+}
 
-              //
+class _MainPageState extends State<SlideImageC2> with TickerProviderStateMixin {
+  final controller = TransformationController();
+  late AnimationController controllerReset;
+  final String namealbumC;
+  final String selectpicC;
 
-              if (await user.Login) {
-                list_album la = new list_album();
-                var ListImageDevice = await la.getimagefrom_api();
-                print(
-                    'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-                print(await la.listimageshow);
-                listimagecloud listimgC = new listimagecloud();
-                ListImgCloud = await listimgC.getimagefrom_api();
-                print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
-                for (int i = 0; i < ListImgCloud.length; i++) {
-                  print(await ListImgCloud[i].gettoString());
-                }
-              }
-              //แก้ได้ละ
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => FilePic(
-                            ListImgCloud: ListImgCloud,
-                          )));
-              print("ส่งชื่ออัลบั้มไปที่ ShowImage" + this.namealbumC);
-            },
-          ),
-        ),
-        body: Body(startImg: selectpicC),
-      ),
+  _MainPageState({required this.namealbumC, required this.selectpicC});
+
+  @override
+  void initState() {
+    super.initState();
+
+    controllerReset = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 700),
     );
-  }
-}
 
-// ignore: must_be_immutable
-class Body extends StatefulWidget {
-  var startImg;
-  Body({required this.startImg});
+    controller.addListener(() {
+      if (controller.value.getMaxScaleOnAxis() >= 3) {
+        print('Scale >= 3.0');
+      }
+    });
+  }
 
   @override
-  State<Body> createState() => _Body(startImg: startImg);
-}
-
-class _Body extends State<Body> {
-  var startImg;
-  _Body({required this.startImg});
-  final PageController controller = PageController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: InteractiveViewer(
-            panEnabled: false, // Set it to false
-            boundaryMargin: EdgeInsets.all(100),
-            minScale: 0.5,
-            maxScale: 2,
-            child: Image.network(
-              startImg,
-              width: 500,
-              height: 500,
-              fit: BoxFit.cover,
-            )));
-  }
-}
-
-
-/*import 'package:flutter/material.dart';
-import 'package:project_photo_learn/Object/imagecloud.dart';
-import 'package:project_photo_learn/my_style.dart';
-import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/places_data.dart';
-import 'package:project_photo_learn/page/PagesF/first.dart';
-
-import '../../Backend/User_data.dart';
-
-// ignore: must_be_immutable
-class SlideImageC extends StatelessWidget {
-  var namealbumC;
-  var selectpicC;
-
-  SlideImageC({required this.namealbumC, required this.selectpicC});
-
-  Widget build(BuildContext context) {
-    print(this.selectpicC);
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
+  Widget build(BuildContext context) => Scaffold(
+      appBar: AppBar(
           title: Text("Cloud",
               style: TextStyle(
                 color: MyStyle().blackColor,
               )),
-          centerTitle: true,
+          centerTitle: false,
           backgroundColor: MyStyle().whiteColor,
           automaticallyImplyLeading: true,
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.file_download_outlined,
+                color: MyStyle().blackColor,
+              ),
+              onPressed: () {
+                namealbumC; //ชื่อรูปคลาว
+                selectpicC; //ลิ้งค์รูปคาว
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.delete_outline,
+                color: MyStyle().deleteColor,
+              ),
+              onPressed: () {
+                namealbumC; //ชื่อรูปคลาว
+                selectpicC; //ลิ้งค์รูปคาว
+              },
+            ),
+          ],
           leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios_new,
-              color: MyStyle().blackColor,
-            ),
-            onPressed: () async {
-              user_file user0 = new user_file();
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: MyStyle().blackColor,
+              ),
+              onPressed: () async {
+                user_file user0 = new user_file();
 
-              await user0.getdata_user_file();
-              var user = await user0;
-              var ListImgCloud;
-              var listimageshow;
+                await user0.getdata_user_file();
+                var user = await user0;
+                var ListImgCloud;
+                var listimageshow;
 
-              //
+                //
 
-              if (await user.Login) {
-                list_album la = new list_album();
-                var ListImageDevice = await la.getimagefrom_api();
-                print(
-                    'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-                print(await la.listimageshow);
-                listimagecloud listimgC = new listimagecloud();
-                ListImgCloud = await listimgC.getimagefrom_api();
-                print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
-                for (int i = 0; i < ListImgCloud.length; i++) {
-                  print(await ListImgCloud[i].gettoString());
+                if (await user.Login) {
+                  list_album la = new list_album();
+                  var ListImageDevice = await la.getimagefrom_api();
+                  print(
+                      'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
+                  print(await la.listimageshow);
+                  listimagecloud listimgC = new listimagecloud();
+                  ListImgCloud = await listimgC.getimagefrom_api();
+                  print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
+                  for (int i = 0; i < ListImgCloud.length; i++) {
+                    print(await ListImgCloud[i].gettoString());
+                  }
                 }
-              }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FilePic(
+                              ListImgCloud: ListImgCloud,
+                            )));
+                print("ส่งชื่ออัลบั้มไปที่ ShowImage" + this.namealbumC);
+              })),
+      body: Center(
+        child: InteractiveViewer(
+          clipBehavior: Clip.none,
+          //boundaryMargin: EdgeInsets.all(0),
+          minScale: 0.5,
+          maxScale: 4,
+          //scaleEnabled: false,
+          //constrained: false,
+          //onInteractionStart: (details) => print('Start interaction'),
+          //onInteractionUpdate: (details) => print('Update interaction'),
+          onInteractionEnd: (details) {
+            print('End interaction');
+            //reset();
+          },
+          transformationController: controller,
 
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => FirstState(
-                          page: 2,
-                          user: user,
-                          listimageshow: listimageshow,
-                          ListImgCloud: ListImgCloud)));
-              print("ส่งชื่ออัลบั้มไปที่ ShowImage" + this.namealbumC);
-            },
+          child: CachedNetworkImage(
+            imageUrl: selectpicC,
           ),
         ),
-        body: Body(startImg: 1),
-      ),
-    );
+      ));
+
+  void reset() {
+    final animationReset = Matrix4Tween(
+      begin: controller.value,
+      end: Matrix4.identity(),
+    ).animate(controllerReset);
+
+    animationReset.addListener(() {
+      setState(() {
+        controller.value = animationReset.value;
+      });
+    });
+
+    controllerReset.reset();
+    controllerReset.forward();
+
+    /*setState(() {
+      controller.value = Matrix4.identity();
+    });
+  }*/
   }
 }
-
-// ignore: must_be_immutable
-class Body extends StatefulWidget {
-  int startImg;
-  Body({required this.startImg});
-
-  @override
-  State<Body> createState() => _Body(startImg: startImg);
-}
-
-class _Body extends State<Body> {
-  int startImg;
-  _Body({required this.startImg});
-  int currentIndex = 0;
-  final PageController controller = PageController();
-  List<String> imagelistC = [
-    './images/sangcom1.png',
-    './images/sangcom2.png',
-    './images/sangcom3.jpg',
-    './images/sangcom4.jpg',
-    './images/sangcom5.jpg',
-    './images/sangcom6.png',
-    './images/sangcom7.png',
-    './images/sangcom8.png',
-    './images/sangcom9.png',
-    './images/sangcom10.png'
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 500,
-            width: double.infinity,
-            child: PageView.builder(
-              controller: controller,
-              onPageChanged: (index) {
-                setState(() {
-                  currentIndex = index % imagelistC.length;
-                });
-              },
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: SizedBox(
-                    height: 500,
-                    width: double.infinity,
-                    child: Image.asset(
-                      //////////////////////////////รับค่า int เปลี่ยนหน้า ////////////////////////////////
-                      //imagelistC[this.startImg % imagelistC.length],
-                      imagelistC[index % imagelistC.length],
-                      fit: BoxFit.scaleDown,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          SizedBox(
-            height: 100,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              for (var i = 0; i < imagelistC.length; i++)
-                buildIndicator(currentIndex == i)
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    controller.jumpToPage(currentIndex - 1);
-                  },
-                  icon: Icon(Icons.arrow_back),
-                ),
-                IconButton(
-                  onPressed: () {
-                    controller.jumpToPage(currentIndex + 1);
-                  },
-                  icon: Icon(Icons.arrow_forward),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildIndicator(bool isSelected) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 1),
-      child: Container(
-        height: isSelected ? 12 : 10,
-        width: isSelected ? 12 : 10,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: isSelected ? Colors.black : Colors.grey,
-        ),
-      ),
-    );
-  }
-}
-*/
