@@ -63,7 +63,7 @@ class Add_Album_PageState extends State<Add_Album_Page> {
                   var ListImageDevice = await la.getimagefrom_api();
                   print(
                       'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-                  print(await la.listimageshow);
+                  print(await la.listimageshow_device);
                   listimagecloud listimgC = new listimagecloud();
                   ListImgCloud = await listimgC.getimagefrom_api();
                   print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
@@ -260,7 +260,7 @@ class Add_Album_PageState extends State<Add_Album_Page> {
               var ListImageDevice = await la.getimagefrom_api();
               print(
                   'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-              print(await la.listimageshow);
+              print(await la.listimageshow_device);
               listimagecloud listimgC = new listimagecloud();
               ListImgCloud = await listimgC.getimagefrom_api();
               print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');

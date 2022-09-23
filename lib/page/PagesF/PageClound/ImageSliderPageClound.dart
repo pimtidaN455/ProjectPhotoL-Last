@@ -61,93 +61,94 @@ class _MainPageState extends State<SlideImageC2> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-          title: Text("Cloud",
-              style: TextStyle(
-                color: MyStyle().blackColor,
-              )),
-          centerTitle: false,
-          backgroundColor: MyStyle().whiteColor,
-          automaticallyImplyLeading: true,
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.file_download_outlined,
-                color: MyStyle().blackColor,
+        appBar: AppBar(
+            title: Text("Cloud",
+                style: TextStyle(
+                  color: MyStyle().blackColor,
+                )),
+            centerTitle: false,
+            backgroundColor: MyStyle().whiteColor,
+            automaticallyImplyLeading: true,
+            actions: [
+              IconButton(
+                icon: Icon(
+                  Icons.file_download_outlined,
+                  color: MyStyle().blackColor,
+                ),
+                onPressed: () {
+                  namealbumC; //ชื่อรูปคลาว
+                  selectpicC; //ลิ้งค์รูปคาว
+                },
               ),
-              onPressed: () {
-                namealbumC; //ชื่อรูปคลาว
-                selectpicC; //ลิ้งค์รูปคาว
-              },
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.delete_outline,
-                color: MyStyle().deleteColor,
+              IconButton(
+                icon: Icon(
+                  Icons.delete_outline,
+                  color: MyStyle().deleteColor,
+                ),
+                onPressed: () {
+                  namealbumC; //ชื่อรูปคลาว
+                  selectpicC; //ลิ้งค์รูปคาว
+                },
               ),
-              onPressed: () {
-                namealbumC; //ชื่อรูปคลาว
-                selectpicC; //ลิ้งค์รูปคาว
-              },
-            ),
-          ],
-          leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios_new,
-                color: MyStyle().blackColor,
-              ),
-              onPressed: () async {
-                user_file user0 = new user_file();
+            ],
+            leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: MyStyle().blackColor,
+                ),
+                onPressed: () async {
+                  user_file user0 = new user_file();
 
-                await user0.getdata_user_file();
-                var user = await user0;
-                var ListImgCloud;
-                var listimageshow;
+                  await user0.getdata_user_file();
+                  var user = await user0;
+                  var ListImgCloud;
+                  var listimageshow;
 
-                //
+                  //
 
-                if (await user.Login) {
-                  list_album la = new list_album();
-                  var ListImageDevice = await la.getimagefrom_api();
-                  print(
-                      'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-                  print(await la.listimageshow);
-                  listimagecloud listimgC = new listimagecloud();
-                  ListImgCloud = await listimgC.getimagefrom_api();
-                  print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
-                  for (int i = 0; i < ListImgCloud.length; i++) {
-                    print(await ListImgCloud[i].gettoString());
+                  if (await user.Login) {
+                    list_album la = new list_album();
+                    var ListImageDevice = await la.getimagefrom_api();
+                    print(
+                        'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
+                    print(await la.listimageshow_device);
+                    listimagecloud listimgC = new listimagecloud();
+                    ListImgCloud = await listimgC.getimagefrom_api();
+                    print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
+                    for (int i = 0; i < ListImgCloud.length; i++) {
+                      print(await ListImgCloud[i].gettoString());
+                    }
                   }
-                }
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => FilePic(
-                              ListImgCloud: ListImgCloud,
-                            )));
-                print("ส่งชื่ออัลบั้มไปที่ ShowImage" + this.namealbumC);
-              })),
-      body: Center(
-        child: InteractiveViewer(
-          clipBehavior: Clip.none,
-          //boundaryMargin: EdgeInsets.all(0),
-          minScale: 0.5,
-          maxScale: 4,
-          //scaleEnabled: false,
-          //constrained: false,
-          //onInteractionStart: (details) => print('Start interaction'),
-          //onInteractionUpdate: (details) => print('Update interaction'),
-          onInteractionEnd: (details) {
-            print('End interaction');
-            //reset();
-          },
-          transformationController: controller,
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FilePic(
+                                ListImgCloud: ListImgCloud,
+                              )));
+                  print("ส่งชื่ออัลบั้มไปที่ ShowImage" + this.namealbumC);
+                })),
+        body: Center(
+          child: InteractiveViewer(
+            clipBehavior: Clip.none,
+            //boundaryMargin: EdgeInsets.all(0),
+            minScale: 0.5,
+            maxScale: 4,
+            //scaleEnabled: false,
+            //constrained: false,
+            //onInteractionStart: (details) => print('Start interaction'),
+            //onInteractionUpdate: (details) => print('Update interaction'),
+            onInteractionEnd: (details) {
+              print('End interaction');
+              //reset();
+            },
+            transformationController: controller,
 
-          child: CachedNetworkImage(
-            imageUrl: selectpicC,
+            child: CachedNetworkImage(
+              imageUrl: selectpicC,
+            ),
           ),
         ),
-      ));
+      );
 
   void reset() {
     final animationReset = Matrix4Tween(

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:project_photo_learn/my_style.dart';
 
-class SelectCloud extends StatefulWidget {
+class SelectImageCloud extends StatefulWidget {
   @override
-  _SelectCloudState createState() => _SelectCloudState();
+  _SelectImageCloudState createState() => _SelectImageCloudState();
 }
 
-class _SelectCloudState extends State<SelectCloud> {
+class _SelectImageCloudState extends State<SelectImageCloud> {
   late List<ImageData> imageList;
 
   @override
@@ -17,12 +18,37 @@ class _SelectCloudState extends State<SelectCloud> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Select Cloud",
+            style: TextStyle(
+              color: MyStyle().whiteColor,
+            )),
+        centerTitle: false,
+        backgroundColor: MyStyle().blackColor,
+        automaticallyImplyLeading: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.file_download_outlined,
+              color: MyStyle().addColor,
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.delete_outlined,
+              color: MyStyle().deleteColor,
+            ),
+            onPressed: () {},
+          ),
+        ],
+      ),
       body: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 0.5,
-            crossAxisCount: 5,
-            crossAxisSpacing: 2.0,
-            mainAxisSpacing: 2.0),
+            childAspectRatio: 1,
+            crossAxisCount: 3,
+            crossAxisSpacing: 4.0,
+            mainAxisSpacing: 4.0),
         itemCount: imageList.length,
         itemBuilder: (builder, index) {
           return InkWell(
@@ -45,10 +71,10 @@ class _SelectCloudState extends State<SelectCloud> {
                         ),
                         Center(
                           child: CircleAvatar(
-                            backgroundColor: Color.fromARGB(255, 190, 42, 42),
+                            backgroundColor: Color.fromARGB(255, 255, 255, 255),
                             child: Icon(
                               Icons.check,
-                              color: Colors.white,
+                              color: Color.fromARGB(255, 0, 0, 0),
                             ),
                           ),
                         )

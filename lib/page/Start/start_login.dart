@@ -182,7 +182,8 @@ class _StartloginState extends State<Startlogin> {
                 await la.getimagefrom_apilogin(await user.IDuser);
                 print(
                     'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-                print(await la.listimageshow);
+
+                listimageshow = await la.listimageshow;
                 listimagecloud listimgC = new listimagecloud();
                 ListImgCloud = await listimgC.getimagefrom_api();
                 print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');

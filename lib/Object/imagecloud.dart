@@ -50,6 +50,9 @@ class listimagecloud {
     use_API use_api = use_API();
     print("------------------------------");
     var imageall = await use_api.getallimage_clound();
+    if (imageall == null) {
+      return null;
+    }
     if (imageall.length != 0) {
       for (var image in imageall.keys) {
         imagecloud img = new imagecloud(image, imageall[image]['Url_photo']);

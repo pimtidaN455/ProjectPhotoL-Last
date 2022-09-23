@@ -40,7 +40,7 @@ class _HowtoWidgetState extends State<HowToUse2> {
               var ListImageDevice = await la.getimagefrom_api();
               print(
                   'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-              print(await la.listimageshow);
+              print(await la.listimageshow_device);
               listimagecloud listimgC = new listimagecloud();
               ListImgCloud = await listimgC.getimagefrom_api();
               print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');

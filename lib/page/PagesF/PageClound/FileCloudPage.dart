@@ -156,13 +156,10 @@ class _MyAppState5 extends State<FilePic> {
                       var ListImageDevice = await la.getimagefrom_api();
                       print(
                           'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-                      print(await la.listimageshow);
+                      print(await la.listimageshow_device);
                       listimagecloud listimgC = new listimagecloud();
                       ListImgCloud0 = await listimgC.getimagefrom_api();
                       print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
-                      for (int i = 0; i < ListImgCloud0.length; i++) {
-                        print(await ListImgCloud0[i].geturlimage());
-                      }
                     }
                     Navigator.push(
                         context,
@@ -192,7 +189,7 @@ class _MyAppState5 extends State<FilePic> {
                     var ListImageDevice = await la.getimagefrom_api();
                     print(
                         'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-                    print(await la.listimageshow);
+                    print(await la.listimageshow_device);
                     listimagecloud listimgC = new listimagecloud();
                     ListImgCloud0 = await listimgC.getimagefrom_api();
                     print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
@@ -212,22 +209,14 @@ class _MyAppState5 extends State<FilePic> {
               ),
               IconButton(
                 icon: Icon(
-                  Icons.file_download_outlined,
+                  Icons.settings_outlined,
                   color: MyStyle().blackColor,
                 ),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.delete_outlined,
-                  color: MyStyle().deleteColor,
-                ),
                 onPressed: () {
-                  ////////////////
-
-                  ///
-                  ///
-                  ///
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SelectImageCloud()));
                 },
               ),
             ],

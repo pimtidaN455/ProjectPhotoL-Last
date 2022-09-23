@@ -70,13 +70,10 @@ class AlbumScreenWidget extends State<Homepage> {
                   var ListImageDevice = await la.getimagefrom_api();
                   print(
                       'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-                  print(await la.listimageshow);
+                  print(await la.listimageshow_device);
                   listimagecloud listimgC = new listimagecloud();
                   ListImgCloud = await listimgC.getimagefrom_api();
                   print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
-                  for (int i = 0; i < ListImgCloud.length; i++) {
-                    print(await ListImgCloud[i].gettoString());
-                  }
                 }
 
                 Navigator.push(
@@ -131,32 +128,30 @@ class AlbumScreenWidget extends State<Homepage> {
           padding: EdgeInsets.all(8),
           childAspectRatio: 1 / 1.2,
           children: <Widget>[
-            /* if (this.listimageshow != null)
-              for (int i = 0; i < this.listimageshow.length; i++)
-                _GridItem(
-                  this.listimageshow[i]['Namebum'] as String,
-                  img: this.listimageshow[i]['img'] as String,
+            /*if (this.listimageshow["device"] != null)
+              for (int i = 0; i < this.listimageshow["device"].length; i++)
+                _GridItem_Devoce(
+                  this.listimageshow["device"][i]['Namebum'] as String,
+                  img: this.listimageshow["device"][i]['img'] as String,
                   onTap: () => checkOption(i + 1),
                   selected: i + 1 == optionSelected,
                   selectbum: i + 1,
-                )*/
-
-            if (getBum != null)
-              for (int i = 0; i < getBum.length; i++)
-                _GridItem(
-                  getBum[i]['Namebum'] as String,
-                  img: getBum[i]['img'] as String,
-                  onTap: () => checkOption(i + 1),
-                  selected: i + 1 == optionSelected,
-                  selectbum: i + 1,
-                )
+                ),
+            for (int i = 0; i < this.listimageshow["cloud"].length; i++)
+              _GridItem_Cloud(
+                this.listimageshow["cloud"][i]['Namebum'] as String,
+                img: this.listimageshow["cloud"][i]['img'] as String,
+                onTap: () => checkOption(i + 1),
+                selected: i + 1 == optionSelected,
+                selectbum: i + 1,
+              ),*/
           ],
         ));
   }
 }
 
-class _GridItem extends StatelessWidget {
-  const _GridItem(
+class _GridItem_Devoce extends StatelessWidget {
+  const _GridItem_Devoce(
     this.title, {
     Key? key,
     required this.img,
@@ -174,6 +169,83 @@ class _GridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("อิมเมจจจจจจจจจจ");
+    print(title);
+    print(img);
+    return Ink.image(
+      fit: BoxFit.cover,
+      image: AssetImage(img),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      //ShowImage(name: title, selectbum: selectbum)
+                      ShowImage(
+                        name: title,
+                        selectbum: selectbum,
+                      )));
+          print("เลือกอัลบั้มที่ : ");
+          print(selectbum);
+          print("///////////////////////////////////////////////////////");
+        },
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            /*decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: selected ?? false ? Colors.red : Colors.transparent,
+                  width: selected ?? false ? 5 : 0,
+                ),
+              ),
+            ),*/
+            padding: const EdgeInsets.all(8.0),
+            child: Row(children: <Widget>[
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.black87,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 16),
+                ),
+              ),
+            ]),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GridItem_Cloud extends StatelessWidget {
+  const _GridItem_Cloud(
+    this.title, {
+    Key? key,
+    required this.img,
+    required this.selectbum,
+    required this.onTap,
+    required this.selected,
+  }) : super(key: key);
+
+  final String title;
+  final String img;
+  final int selectbum;
+  final VoidCallback onTap;
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    print("อิมเมจจจจจจจจจจ");
+    print(title);
     print(img);
     return Ink.image(
       fit: BoxFit.cover,
