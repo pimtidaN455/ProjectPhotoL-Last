@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:project_photo_learn/Object/imagecloud.dart';
@@ -189,16 +190,110 @@ class AlbumScreenWidget extends State<Homepage> {
                     selected: i + 1 == optionSelected,
                     selectbum: i + 1,
                     listimageshow: listimageshow),
-            /*for (int i = 0; i < this.listimageshow["cloud"].length; i++)
+            for (int i = 0; i < this.listimageshow["cloud"].length; i++)
               _GridItem_Cloud(
                 this.listimageshow["cloud"][i]['Namebum'] as String,
                 img: this.listimageshow["cloud"][i]['img'] as String,
                 onTap: () => checkOption(i + 1),
                 selected: i + 1 == optionSelected,
                 selectbum: i + 1,
-              ),*/
+              ),
           ],
         ));
+  }
+}
+
+class _GridItem_Cloud extends StatelessWidget {
+  const _GridItem_Cloud(
+    this.title, {
+    Key? key,
+    required this.img,
+    required this.selectbum,
+    required this.onTap,
+    required this.selected,
+  }) : super(key: key);
+
+  final String title;
+  final String img;
+  final int selectbum;
+  final VoidCallback onTap;
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    print("อิมเมจจจจจจจจจจ");
+    print(title);
+    print(img);
+    return CachedNetworkImage(
+      imageUrl: img,
+      imageBuilder: (context, imageProvider) {
+        return Ink.image(
+            image: imageProvider,
+            fit: BoxFit.cover,
+            child: InkWell(
+              onTap: () async {
+                list_album listA = new list_album();
+                var showDevice = await listA.getImag_inAlbum(title);
+                print(showDevice);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            //ShowImage(name: title, selectbum: selectbum)
+                            ShowImage(
+                              name: title,
+                              listimageshow: showDevice,
+                            )));
+                print("เลือกอัลบั้มที่ : ");
+                print(showDevice);
+                print(
+                    "///////////////////////////////////////////////////////");
+              },
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  /*decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: selected ?? false ? Colors.red : Colors.transparent,
+                  width: selected ?? false ? 5 : 0,
+                ),
+              ),
+            ),*/
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(children: <Widget>[
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.black87,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        title,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 16),
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+            ));
+      },
+      placeholder: (context, url) => Container(
+          alignment: Alignment.center, child: CircularProgressIndicator()),
+      errorWidget: (context, url, error) {
+        return Center(
+          child: Text(
+            'Error',
+            style: TextStyle(color: Colors.red),
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -245,82 +340,6 @@ class _GridItem_Devoce extends StatelessWidget {
                       )));
           print("เลือกอัลบั้มที่ : ");
           print(showDevice);
-          print("///////////////////////////////////////////////////////");
-        },
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            /*decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: selected ?? false ? Colors.red : Colors.transparent,
-                  width: selected ?? false ? 5 : 0,
-                ),
-              ),
-            ),*/
-            padding: const EdgeInsets.all(8.0),
-            child: Row(children: <Widget>[
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.black87,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 16),
-                ),
-              ),
-            ]),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _GridItem_Cloud extends StatelessWidget {
-  const _GridItem_Cloud(
-    this.title, {
-    Key? key,
-    required this.img,
-    required this.selectbum,
-    required this.onTap,
-    required this.selected,
-  }) : super(key: key);
-
-  final String title;
-  final String img;
-  final int selectbum;
-  final VoidCallback onTap;
-  final bool selected;
-
-  @override
-  Widget build(BuildContext context) {
-    print("อิมเมจจจจจจจจจจ");
-    print(title);
-    print(img);
-    return Ink.image(
-      fit: BoxFit.cover,
-      image: AssetImage(img),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      //ShowImage(name: title, selectbum: selectbum)
-                      ShowImage(
-                        name: title,
-                        listimageshow: selectbum,
-                      )));
-          print("เลือกอัลบั้มที่ : ");
-          print(selectbum);
           print("///////////////////////////////////////////////////////");
         },
         child: Align(

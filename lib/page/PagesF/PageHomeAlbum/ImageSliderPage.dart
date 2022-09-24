@@ -1,4 +1,161 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:project_photo_learn/Object/imagecloud.dart';
+import 'package:project_photo_learn/my_style.dart';
+import 'package:project_photo_learn/page/Backend/User_data.dart';
+import 'package:project_photo_learn/page/PagesF/PageClound/FileCloudPage.dart';
+import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/HomePage.dart';
+import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/ImagePage.dart';
+import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/places_data.dart';
+import 'package:project_photo_learn/page/PagesF/first.dart';
+
+class SlideImageS extends StatelessWidget {
+  final String title = 'Interactive Viewer';
+  var namealbumS;
+  var selectpicS;
+  SlideImageS({required this.namealbumS, required this.selectpicS});
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+        title: title,
+        home: SlideImageS2(
+            title: title,
+            namealbumS: this.namealbumS,
+            selectpicS: this.selectpicS),
+      );
+}
+
+class SlideImageS2 extends StatefulWidget {
+  final String title;
+  final String namealbumS;
+  final String selectpicS;
+  const SlideImageS2(
+      {required this.title,
+      required this.namealbumS,
+      required this.selectpicS});
+
+  @override
+  SlideImage createState() =>
+      SlideImage(title: namealbumS, selectPic: selectpicS);
+}
+
+class SlideImage extends State<SlideImageS2> with TickerProviderStateMixin {
+  final controller = TransformationController();
+  late AnimationController controllerReset;
+  String title;
+  String selectPic;
+
+  SlideImage({required this.title, required this.selectPic});
+
+  @override
+  void initState() {
+    super.initState();
+
+    controllerReset = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 700),
+    );
+
+    controller.addListener(() {
+      if (controller.value.getMaxScaleOnAxis() >= 3) {
+        print('Scale >= 3.0');
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: Text(this.title,
+              style: TextStyle(
+                color: MyStyle().blackColor,
+              )),
+          centerTitle: true,
+          backgroundColor: MyStyle().whiteColor,
+          automaticallyImplyLeading: true,
+          leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: MyStyle().blackColor,
+              ),
+              onPressed: () async {
+                user_file user0 = new user_file();
+
+                await user0.getdata_user_file();
+                var user = await user0;
+                var ListImgCloud;
+                var listimageshow;
+
+                //
+                if (await user.Login) {
+                  list_album la = await new list_album();
+                  await la.getimagefrom_api();
+                  print(
+                      'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
+                  listimageshow = await la.listimageshow;
+
+                  listimagecloud listimgC = await new listimagecloud();
+                  ListImgCloud = await listimgC.getimagefrom_api();
+                  print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
+                  for (int i = 0; i < ListImgCloud.length; i++) {
+                    print(await ListImgCloud[i].geturlimage());
+                  }
+                }
+
+                var Request_page = ShowImage(
+                  name: title,
+                  listimageshow: listimageshow,
+                );
+
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Request_page));
+                print("ส่งชื่ออัลบั้มไปที่ ShowImage" + this.title);
+              }),
+        ),
+        body: Center(
+            child: InteractiveViewer(
+                clipBehavior: Clip.none,
+                //boundaryMargin: EdgeInsets.all(0),
+                minScale: 0.5,
+                maxScale: 4,
+                //scaleEnabled: false,
+                //constrained: false,
+                //onInteractionStart: (details) => print('Start interaction'),
+                //onInteractionUpdate: (details) => print('Update interaction'),
+                onInteractionEnd: (details) {
+                  print('End interaction');
+                  //reset();
+                },
+                transformationController: controller,
+                child: Ink.image(
+                  fit: BoxFit.cover,
+                  image: FileImage(File(selectPic)),
+                ))),
+      );
+
+  void reset() {
+    final animationReset = Matrix4Tween(
+      begin: controller.value,
+      end: Matrix4.identity(),
+    ).animate(controllerReset);
+
+    animationReset.addListener(() {
+      setState(() {
+        controller.value = animationReset.value;
+      });
+    });
+
+    controllerReset.reset();
+    controllerReset.forward();
+  }
+}
+ 
+
+
+
+
+/*import 'package:flutter/material.dart';
 import 'package:project_photo_learn/my_style.dart';
 import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/ImagePage.dart';
 
@@ -164,3 +321,4 @@ class _Body extends State<Body> {
     );
   }
 }
+ */
