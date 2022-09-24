@@ -41,16 +41,17 @@ class _setting_page extends State<setting_page> {
           var ListImgCloud;
           var listimageshow;
           if (await user.Login) {
-            list_album la = new list_album();
-            var ListImageDevice = await la.getimagefrom_api();
+            list_album la = await new list_album();
+            await la.getimagefrom_api();
             print(
                 'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-            print(await la.listimageshow_device);
-            listimagecloud listimgC = new listimagecloud();
+            listimageshow = await la.listimageshow;
+
+            listimagecloud listimgC = await new listimagecloud();
             ListImgCloud = await listimgC.getimagefrom_api();
             print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
             for (int i = 0; i < ListImgCloud.length; i++) {
-              print(await ListImgCloud[i].gettoString());
+              print(await ListImgCloud[i].geturlimage());
             }
           }
 

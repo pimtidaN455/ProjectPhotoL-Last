@@ -32,7 +32,10 @@ class list_album {
           "IDENTITYALBUM": await imageall[Key]["datafolder"]["Identity"],
           "KEYWORDALBUM": await imageall[Key]["datafolder"]["Keyword"]
         };
+        print(dataalbum);
+        print("แว๊กกกกกกกกกกกกกกกกกกกกกกกกกกกกกกก");
         await db.saveAlbum(await dataalbum, await db2);
+
         var check = false;
         if (await imageall[Key].length == 2) {
           print("อิมเมดคีย์");
@@ -65,14 +68,16 @@ class list_album {
             }
 
             Photo pt = await new Photo(
-                photo,
-                await imageall[Key]["Photo"][photo]["Namephoto"],
-                await imageall[Key]["Photo"][photo]["AddressImage"],
-                await imageall[Key]["Photo"][photo]["Keyword"],
-                await imageall[Key]["Photo"][photo]["Description"],
-                await imageall[Key]["Photo"][photo]["Fixed_Album"].toString(),
-                await imageall[Key]["Photo"][photo]["Cloud_Storage"],
-                Key);
+              photo,
+              await imageall[Key]["Photo"][photo]["Namephoto"],
+              await imageall[Key]["Photo"][photo]["AddressImage"],
+              await imageall[Key]["Photo"][photo]["Keyword"],
+              await imageall[Key]["Photo"][photo]["Description"],
+              await imageall[Key]["Photo"][photo]["Fixed_Album"].toString(),
+              await imageall[Key]["Photo"][photo]["status_Cloud_Storage"],
+              Key,
+              await imageall[Key]["Photo"][photo]["Cloud_Storage"],
+            );
             await db.savePhoto(await pt, await db2);
           }
         }
@@ -83,6 +88,40 @@ class list_album {
     listimageshow["cloud"] = listimageshow_cloud;
 
     return await listimage;
+  }
+
+  getImag_inAlbum(var title) async {
+    DBHelper db = DBHelper();
+    use_API UseApi = new use_API();
+    print('APIIIIIIIIIIIII');
+
+    var showDevice = await db.getPhotoinAlbum(title);
+    if (showDevice.length != 0) {
+      for (int i = 0; i < showDevice.length; i++) {
+        if (showDevice[i]["statuscloud"] == "True_Don't have device") {
+          var mapAlbum = {
+            'Namebum': title,
+            'img':
+                await UseApi.GetImgCloud(await showDevice[i]["Cloud_Storage"]),
+            'nameimg': showDevice[i]["id"],
+          };
+          listimageshow_cloud.add(await mapAlbum);
+        } else {
+          var mapAlbum = {
+            'Namebum': title,
+            'img': showDevice[i]["photopath"],
+            'nameimg': showDevice[i]["id"],
+          };
+          listimageshow_device.add(await mapAlbum);
+        }
+      }
+      print(listimageshow_cloud);
+      print(listimageshow_device);
+    }
+    listimageshow["device"] = listimageshow_device;
+    listimageshow["cloud"] = listimageshow_cloud;
+
+    return await listimageshow;
   }
 
   getimagefrom_apilogin(var token) async {
@@ -144,6 +183,7 @@ class list_album {
                 await imageall[Key]["Photo"][photo]["Keyword"],
                 await imageall[Key]["Photo"][photo]["Description"],
                 await imageall[Key]["Photo"][photo]["Fixed_Album"].toString(),
+                await imageall[Key]["Photo"][photo]["status_Cloud_Storage"],
                 await imageall[Key]["Photo"][photo]["Cloud_Storage"],
                 Key);
             await db.savePhoto(await pt, await db2);

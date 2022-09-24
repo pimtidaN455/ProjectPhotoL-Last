@@ -178,17 +178,17 @@ class _StartloginState extends State<Startlogin> {
               //
 
               if (await user.Login) {
-                list_album la = new list_album();
-                await la.getimagefrom_apilogin(await user.IDuser);
+                list_album la = await new list_album();
+                await la.getimagefrom_api();
                 print(
                     'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-
                 listimageshow = await la.listimageshow;
-                listimagecloud listimgC = new listimagecloud();
+
+                listimagecloud listimgC = await new listimagecloud();
                 ListImgCloud = await listimgC.getimagefrom_api();
                 print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
                 for (int i = 0; i < ListImgCloud.length; i++) {
-                  print(await ListImgCloud[i].gettoString());
+                  print(await ListImgCloud[i].geturlimage());
                 }
               }
 

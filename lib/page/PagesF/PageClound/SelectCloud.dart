@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:project_photo_learn/my_style.dart';
 
 class SelectImageCloud extends StatefulWidget {
+  var imageList;
+  SelectImageCloud({required this.imageList});
   @override
-  _SelectImageCloudState createState() => _SelectImageCloudState();
+  _SelectImageCloudState createState() =>
+      _SelectImageCloudState(imageList: imageList);
 }
 
 class _SelectImageCloudState extends State<SelectImageCloud> {
-  late List<ImageData> imageList;
-
+  var imageList;
+  _SelectImageCloudState({required this.imageList});
   @override
   void initState() {
     super.initState();
-    imageList = ImageData.getImage();
   }
 
   @override
@@ -97,27 +99,5 @@ class _SelectImageCloudState extends State<SelectImageCloud> {
   @override
   void dispose() {
     super.dispose();
-  }
-}
-
-class ImageData {
-  String imageURL;
-  bool isSelected;
-  int id;
-
-  ImageData(this.imageURL, this.isSelected, this.id);
-
-  static List<ImageData> getImage() {
-    return [
-      ImageData('https://picsum.photos/200', false, 1),
-      ImageData('https://picsum.photos/100', false, 2),
-      ImageData('https://picsum.photos/300', false, 3),
-      ImageData('https://picsum.photos/400', false, 4),
-      ImageData('https://picsum.photos/500', false, 5),
-      ImageData('https://picsum.photos/600', false, 6),
-      ImageData('https://picsum.photos/700', false, 7),
-      ImageData('https://picsum.photos/800', false, 8),
-      ImageData('https://picsum.photos/900', false, 9),
-    ];
   }
 }

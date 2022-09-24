@@ -24,20 +24,40 @@ class DBHelper {
     );
   }
 
+  delete_database() async {
+    io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    File filedatabase = await new File(join(documentsDirectory.path, DB_NAME));
+    bool checkfile = await filedatabase.existsSync();
+    File filedatabaseJ =
+        await new File(join(documentsDirectory.path, "database.db-journal"));
+    if (checkfile) {
+      /*final db2 = await openDatabase(
+        join(documentsDirectory.path, DB_NAME),
+      );*/
+      filedatabaseJ.delete();
+      filedatabase.delete();
+
+      //เขียนลบ database
+    }
+    print(await openDatabase(
+      join(documentsDirectory.path, DB_NAME),
+    ));
+    print('db ลบแล้วววววววววววววววววว');
+  }
+
   checkDatabase() async {
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
     File filedatabase = await new File(join(documentsDirectory.path, DB_NAME));
     bool checkfile = await filedatabase.existsSync();
 
     if (checkfile) {
-      /*
       final db2 = await openDatabase(
         join(documentsDirectory.path, DB_NAME),
       );
+      print(await db2.runtimeType);
       _db = await db2;
       print('db ไม่ว่างงงงงงงง');
       return await _db;
-      */
 
       //เขียนลบ database
     }
@@ -50,8 +70,8 @@ class DBHelper {
   initDB() async {
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, DB_NAME);
-    var db = await openDatabase(path, version: 1, onCreate: _onCreate);
-    return db;
+    var db2 = await openDatabase(path, version: 1, onCreate: _onCreate);
+    return db2;
   }
 
   _onCreate(Database db, int version) async {
@@ -63,6 +83,7 @@ class DBHelper {
     String photoclass = 'photoclass';
     String fixalbum = 'fixalbum';
     String statuscloud = 'statuscloud';
+    String Cloud_Storage = 'Cloud_Storage';
 
     String NAMEALBUM = 'NAMEALBUM';
     String DESCRIPTIONALBUM = 'DESCRIPTIONALBUM';
@@ -70,14 +91,16 @@ class DBHelper {
     String KEYWORDALBUM = 'KEYWORDALBUM';
 
     await db.execute(
-        'CREATE TABLE $TABLE_CLASS ($NAMEALBUM TEXT , $DESCRIPTIONALBUM TEXT ,$IDENTITYALBUM TEXT ,$KEYWORDALBUM TEXT)');
+        'CREATE TABLE $TABLE_CLASS ($NAMEALBUM TEXT PRIMARY KEY , $DESCRIPTIONALBUM TEXT ,$IDENTITYALBUM TEXT ,$KEYWORDALBUM TEXT)');
     print("dddddddddddmakkkkkkkkkkkkk");
     await db.execute(
-        'CREATE TABLE $TABLE_PHOTO ($id TEXT, $photoName TEXT ,$photopath TEXT , $photokeyword TEXT ,$photodescriptions TEXT,$fixalbum TEXT ,$statuscloud TEXT ,$photoclass TEXT)');
+        'CREATE TABLE $TABLE_PHOTO ($id TEXT PRIMARY KEY, $photoName TEXT ,$photopath TEXT , $photokeyword TEXT ,$photodescriptions TEXT,$fixalbum TEXT ,$statuscloud TEXT ,$photoclass TEXT,$Cloud_Storage TEXT)');
   }
 
   saveAlbum(var album, var db) async {
     var dbClient = await db;
+    print("อลับั้มมมมมม");
+    print(await dbClient);
     final id = await dbClient.insert(TABLE_CLASS, album,
         conflictAlgorithm: ConflictAlgorithm.replace);
     print(id);
@@ -89,7 +112,8 @@ class DBHelper {
     return (await dbClient.query(TABLE_PHOTO));
   }
 
-  getPhotoinAlbum(var db, var namealbum) async {
+  getPhotoinAlbum(var namealbum) async {
+    var db = await checkDatabase();
     //var name = "'" + '"' + "photoclass" + '"' + ' = ' + namealbum + "'";
     var dbClient = await db;
     return (await dbClient

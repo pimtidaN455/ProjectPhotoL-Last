@@ -39,7 +39,8 @@ class _FirstState extends State<FirstState> {
 
   Widget build(BuildContext context) {
     final Screen = [
-      Homepage(user: user, listimageshow: listimageshow),
+      Homepage(
+          user: user, listimageshow: listimageshow, ListImgCloud: ListImgCloud),
       Searchpage(),
       FilePic(ListImgCloud: ListImgCloud),
       Person_page1(user: user)

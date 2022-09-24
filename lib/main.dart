@@ -19,6 +19,11 @@ void main() async {
   var ListImgCloud;
   var listimageshow;
 
+  DBHelper db = DBHelper();
+
+  //await db.delete_database();
+  print("database ");
+
   //
 
   if (await user.Login) {
@@ -39,11 +44,9 @@ void main() async {
   print("ลิสอิมเมดคาวววววว");
   //print(await ListImgCloud[0].gettoString());
 
-  DBHelper db = DBHelper();
-
   var db2 = await db.checkDatabase();
   print("--------------------");
-  print(await db.getPhotoinAlbum(db2, "Person"));
+  print(await db.getPhotoinAlbum("Person"));
   print(await db2.runtimeType);
   print("--------------------");
 

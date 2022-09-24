@@ -50,7 +50,9 @@ class _MyAppState5 extends State<FilePic> {
     final result = await FilePicker.platform
         .pickFiles(allowMultiple: true, type: FileType.image);
     //allowedExtensions: ['jpg', 'jpeg']);
-
+    print("vvvvvvv");
+    print(result);
+    print("vvvvvvv");
     if (result == null) return;
     for (int i = 0; i < result.files.length; i++) {
       newFileNoCash = await saveFilePermanently(result.files[i]);
@@ -152,15 +154,20 @@ class _MyAppState5 extends State<FilePic> {
                     //
 
                     if (await user.Login) {
-                      list_album la = new list_album();
-                      var ListImageDevice = await la.getimagefrom_api();
+                      list_album la = await new list_album();
+                      await la.getimagefrom_api();
                       print(
                           'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-                      print(await la.listimageshow_device);
-                      listimagecloud listimgC = new listimagecloud();
-                      ListImgCloud0 = await listimgC.getimagefrom_api();
+                      listimageshow = await la.listimageshow;
+
+                      listimagecloud listimgC = await new listimagecloud();
+                      ListImgCloud = await listimgC.getimagefrom_api();
                       print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
+                      for (int i = 0; i < ListImgCloud.length; i++) {
+                        print(await ListImgCloud[i].geturlimage());
+                      }
                     }
+
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -168,7 +175,7 @@ class _MyAppState5 extends State<FilePic> {
                                 page: 2,
                                 user: user,
                                 listimageshow: listimageshow,
-                                ListImgCloud: ListImgCloud0)));
+                                ListImgCloud: ListImgCloud)));
                   }),
               IconButton(
                 icon: Icon(
@@ -185,16 +192,17 @@ class _MyAppState5 extends State<FilePic> {
                   //
 
                   if (await user.Login) {
-                    list_album la = new list_album();
-                    var ListImageDevice = await la.getimagefrom_api();
+                    list_album la = await new list_album();
+                    await la.getimagefrom_api();
                     print(
                         'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-                    print(await la.listimageshow_device);
-                    listimagecloud listimgC = new listimagecloud();
-                    ListImgCloud0 = await listimgC.getimagefrom_api();
+                    listimageshow = await la.listimageshow;
+
+                    listimagecloud listimgC = await new listimagecloud();
+                    ListImgCloud = await listimgC.getimagefrom_api();
                     print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
-                    for (int i = 0; i < ListImgCloud0.length; i++) {
-                      print(await ListImgCloud0[i].geturlimage());
+                    for (int i = 0; i < ListImgCloud.length; i++) {
+                      print(await ListImgCloud[i].geturlimage());
                     }
                   }
                   Navigator.push(
@@ -204,7 +212,7 @@ class _MyAppState5 extends State<FilePic> {
                               page: 2,
                               user: user,
                               listimageshow: listimageshow,
-                              ListImgCloud: ListImgCloud0)));
+                              ListImgCloud: ListImgCloud)));
                 },
               ),
               IconButton(
@@ -213,10 +221,18 @@ class _MyAppState5 extends State<FilePic> {
                   color: MyStyle().blackColor,
                 ),
                 onPressed: () {
+                  List<ImageData> imageList = [];
+                  //imageList = ImageData.getImage();
+                  for (int i = 0; i < ListImgCloud.length; i++) {
+                    ImageData idt =
+                        ImageData(ListImgCloud[i].geturlimage(), false, i);
+                    imageList.add(idt);
+                  }
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SelectImageCloud()));
+                          builder: (context) =>
+                              SelectImageCloud(imageList: imageList)));
                 },
               ),
             ],
@@ -241,6 +257,28 @@ class _MyAppState5 extends State<FilePic> {
             ],
           )),
     );
+  }
+}
+
+class ImageData {
+  String imageURL;
+  bool isSelected;
+  int id;
+
+  ImageData(this.imageURL, this.isSelected, this.id);
+
+  static List<ImageData> getImage() {
+    return [
+      ImageData('https://picsum.photos/200', false, 1),
+      ImageData('https://picsum.photos/100', false, 2),
+      ImageData('https://picsum.photos/300', false, 3),
+      ImageData('https://picsum.photos/400', false, 4),
+      ImageData('https://picsum.photos/500', false, 5),
+      ImageData('https://picsum.photos/600', false, 6),
+      ImageData('https://picsum.photos/700', false, 7),
+      ImageData('https://picsum.photos/800', false, 8),
+      ImageData('https://picsum.photos/900', false, 9),
+    ];
   }
 }
 

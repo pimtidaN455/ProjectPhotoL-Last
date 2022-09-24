@@ -7,16 +7,17 @@ class Photo {
   late String photoclass;
   late String fixalbum;
   late String statuscloud;
+  late String Cloud_Storage;
   Photo(
-    this.id,
-    this.photoName,
-    this.photopath,
-    this.photokeyword,
-    this.photodescriptions,
-    this.fixalbum,
-    this.statuscloud,
-    this.photoclass,
-  );
+      this.id,
+      this.photoName,
+      this.photopath,
+      this.photokeyword,
+      this.photodescriptions,
+      this.fixalbum,
+      this.statuscloud,
+      this.photoclass,
+      this.Cloud_Storage);
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
@@ -28,6 +29,7 @@ class Photo {
       'fixalbum': fixalbum,
       'statuscloud': statuscloud,
       'photoclass': photoclass,
+      'Cloud_Storage': Cloud_Storage,
     };
     return map;
   }
@@ -41,6 +43,7 @@ class Photo {
     fixalbum = map['fixalbum'];
     statuscloud = map['statuscloud'];
     photoclass = map['photoclass'];
+    Cloud_Storage = map['Cloud_Storage'];
   }
 
   @override
