@@ -86,6 +86,28 @@ class SlideImage extends State<SlideImageS2> with TickerProviderStateMixin {
           centerTitle: true,
           backgroundColor: MyStyle().whiteColor,
           automaticallyImplyLeading: true,
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.file_download_outlined,
+                color: MyStyle().blackColor,
+              ),
+              onPressed: () {
+                title; //ชื่อรูปคลาว
+                selectPic; //ลิ้งค์รูปคาว
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.delete_outline,
+                color: MyStyle().deleteColor,
+              ),
+              onPressed: () {
+                title; //ชื่อรูปคลาว
+                selectPic; //ลิ้งค์รูปคาว
+              },
+            ),
+          ],
           leading: IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_new,
@@ -141,7 +163,7 @@ class SlideImage extends State<SlideImageS2> with TickerProviderStateMixin {
                 },
                 transformationController: controller,
                 child: Ink.image(
-                  fit: BoxFit.cover,
+                  //fit: BoxFit.cover,
                   image: FileImage(File(selectPic)),
                 ))),
       );
