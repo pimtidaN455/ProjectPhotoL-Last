@@ -182,8 +182,10 @@ class _GridItem extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      SlideImageS(namealbumS: title, selectpicS: img)));
+                  builder: (context) => SlideImageS(
+                      namealbumS: title,
+                      selectpicS: img,
+                      listimageshow: listimageshow)));
           print("เลือกรูปที่ : ");
           print(title);
           print("///////////////////////////////////////////////////////");

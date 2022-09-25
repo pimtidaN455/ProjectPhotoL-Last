@@ -15,14 +15,19 @@ class SlideImageS extends StatelessWidget {
   final String title = 'Interactive Viewer';
   var namealbumS;
   var selectpicS;
-  SlideImageS({required this.namealbumS, required this.selectpicS});
+  var listimageshow;
+  SlideImageS(
+      {required this.namealbumS,
+      required this.selectpicS,
+      required this.listimageshow});
   @override
   Widget build(BuildContext context) => MaterialApp(
         title: title,
         home: SlideImageS2(
             title: title,
             namealbumS: this.namealbumS,
-            selectpicS: this.selectpicS),
+            selectpicS: this.selectpicS,
+            listimageshow: this.listimageshow),
       );
 }
 
@@ -30,14 +35,18 @@ class SlideImageS2 extends StatefulWidget {
   final String title;
   final String namealbumS;
   final String selectpicS;
+  final listimageshow;
   const SlideImageS2(
       {required this.title,
       required this.namealbumS,
-      required this.selectpicS});
+      required this.selectpicS,
+      required this.listimageshow});
 
   @override
-  SlideImage createState() =>
-      SlideImage(title: namealbumS, selectPic: selectpicS);
+  SlideImage createState() => SlideImage(
+      title: namealbumS,
+      selectPic: selectpicS,
+      listimageshow: this.listimageshow);
 }
 
 class SlideImage extends State<SlideImageS2> with TickerProviderStateMixin {
@@ -45,8 +54,11 @@ class SlideImage extends State<SlideImageS2> with TickerProviderStateMixin {
   late AnimationController controllerReset;
   String title;
   String selectPic;
-
-  SlideImage({required this.title, required this.selectPic});
+  final listimageshow;
+  SlideImage(
+      {required this.title,
+      required this.selectPic,
+      required this.listimageshow});
 
   @override
   void initState() {
@@ -105,7 +117,7 @@ class SlideImage extends State<SlideImageS2> with TickerProviderStateMixin {
 
                 var Request_page = ShowImage(
                   name: title,
-                  listimageshow: listimageshow,
+                  listimageshow: this.listimageshow,
                 );
 
                 Navigator.push(context,
