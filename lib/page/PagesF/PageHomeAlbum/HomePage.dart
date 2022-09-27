@@ -245,6 +245,7 @@ class _GridItem_Cloud extends StatelessWidget {
                               listimageshow: showDevice,
                             )));
                 print("เลือกอัลบั้มที่ : ");
+                print(title);
                 print(showDevice);
                 print(
                     "///////////////////////////////////////////////////////");

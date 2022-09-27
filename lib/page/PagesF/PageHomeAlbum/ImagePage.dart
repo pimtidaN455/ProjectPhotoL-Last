@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:project_photo_learn/Object/imagecloud.dart';
 import 'package:project_photo_learn/my_style.dart';
 import 'package:project_photo_learn/page/PagesF/PageClound/FileCloudPage.dart';
-import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/ImageSliderPage.dart';
+import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/ImageSilederPage_Cloud.dart';
+import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/ImageSliderPage_Device.dart';
 import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/SelectImageDevice.dart';
 import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/places_data.dart';
 import 'package:project_photo_learn/page/PagesF/first.dart';
@@ -23,6 +25,7 @@ class ShowImage extends StatefulWidget {
 
 class Allimages extends State<ShowImage> {
   int optionSelected = 0;
+
   var name;
   var listimageshow; //อัลบั้มที่ผู้ใช้เลือก
   Allimages({this.name, this.listimageshow});
@@ -35,6 +38,9 @@ class Allimages extends State<ShowImage> {
 
   @override
   Widget build(BuildContext context) {
+    print("Image Page รับอะไรมาบ้าง ");
+    print(name);
+    print(listimageshow);
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -60,9 +66,9 @@ class Allimages extends State<ShowImage> {
                 listimagecloud listimgC = new listimagecloud();
                 ListImgCloud = await listimgC.getimagefrom_api();
                 print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
-                for (int i = 0; i < ListImgCloud.length; i++) {
+                /*for (int i = 0; i < ListImgCloud.length; i++) {
                   print(await ListImgCloud[i].gettoString());
-                }
+                }*/
               }
 
               Navigator.push(
@@ -150,8 +156,64 @@ class Allimages extends State<ShowImage> {
                     selected: i + 1 == optionSelected,
                     selectbum: i + 1,
                     listimageshow: listimageshow),
+            for (int i = 0; i < this.listimageshow["cloud"].length; i++)
+              _GridItem_Cloud(
+                this.listimageshow["cloud"][i]['Namebum'] as String,
+                img: this.listimageshow["cloud"][i]['img'] as String,
+                onTap: () => checkOption(i + 1),
+                selected: i + 1 == optionSelected,
+                selectbum: i + 1,
+                listimageshow: listimageshow,
+              ),
           ],
         ));
+  }
+}
+
+class _GridItem_Cloud extends StatelessWidget {
+  const _GridItem_Cloud(
+    this.title, {
+    Key? key,
+    required this.img,
+    required this.selectbum,
+    required this.onTap,
+    required this.selected,
+    required this.listimageshow,
+  }) : super(key: key);
+
+  final String title;
+  final String img;
+  final int selectbum;
+  final VoidCallback onTap;
+  final bool selected;
+  final listimageshow;
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+        imageUrl: img,
+        imageBuilder: (context, imageProvider) {
+          return Ink.image(
+            image: imageProvider,
+            fit: BoxFit.cover,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SlideImageC(
+                            namealbumS: title,
+                            selectpicS: img,
+                            status: "cloud",
+                            listimageshow: listimageshow)));
+                print("รูปรวม ส่งไปที่ รูปใหญ่ : ");
+                print(title);
+                print(img);
+                print(
+                    "///////////////////////////////////////////////////////");
+              },
+            ),
+          );
+        });
   }
 }
 
@@ -182,12 +244,14 @@ class _GridItem extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => SlideImageS(
+                  builder: (context) => SlideImageD(
                       namealbumS: title,
                       selectpicS: img,
+                      status: "device",
                       listimageshow: listimageshow)));
-          print("เลือกรูปที่ : ");
+          print("รูปรวม ส่งไปที่ รูปใหญ่ : ");
           print(title);
+          print(img);
           print("///////////////////////////////////////////////////////");
         },
       ),

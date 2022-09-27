@@ -11,54 +11,62 @@ import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/ImagePage.dart';
 import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/places_data.dart';
 import 'package:project_photo_learn/page/PagesF/first.dart';
 
-class SlideImageS extends StatelessWidget {
+class SlideImageD extends StatelessWidget {
   final String title = 'Interactive Viewer';
   var namealbumS;
   var selectpicS;
   var listimageshow;
-  SlideImageS(
+  var status;
+  SlideImageD(
       {required this.namealbumS,
       required this.selectpicS,
-      required this.listimageshow});
+      required this.listimageshow,
+      required String status});
   @override
   Widget build(BuildContext context) => MaterialApp(
         title: title,
-        home: SlideImageS2(
+        home: SlideImageD2(
             title: title,
             namealbumS: this.namealbumS,
             selectpicS: this.selectpicS,
-            listimageshow: this.listimageshow),
+            listimageshow: this.listimageshow,
+            status: this.status),
       );
 }
 
-class SlideImageS2 extends StatefulWidget {
+class SlideImageD2 extends StatefulWidget {
   final String title;
   final String namealbumS;
   final String selectpicS;
   final listimageshow;
-  const SlideImageS2(
+  final String status;
+  const SlideImageD2(
       {required this.title,
       required this.namealbumS,
       required this.selectpicS,
-      required this.listimageshow});
-
+      required this.listimageshow,
+      required this.status});
   @override
-  SlideImage createState() => SlideImage(
+  SlideImageDevice createState() => SlideImageDevice(
       title: namealbumS,
       selectPic: selectpicS,
-      listimageshow: this.listimageshow);
+      listimageshow: this.listimageshow,
+      status: status);
 }
 
-class SlideImage extends State<SlideImageS2> with TickerProviderStateMixin {
+class SlideImageDevice extends State<SlideImageD2>
+    with TickerProviderStateMixin {
   final controller = TransformationController();
   late AnimationController controllerReset;
   String title;
   String selectPic;
   final listimageshow;
-  SlideImage(
+  String status;
+  SlideImageDevice(
       {required this.title,
       required this.selectPic,
-      required this.listimageshow});
+      required this.listimageshow,
+      required this.status});
 
   @override
   void initState() {
@@ -78,95 +86,87 @@ class SlideImage extends State<SlideImageS2> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(this.title,
-              style: TextStyle(
-                color: MyStyle().blackColor,
-              )),
-          centerTitle: true,
-          backgroundColor: MyStyle().whiteColor,
-          automaticallyImplyLeading: true,
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.file_download_outlined,
-                color: MyStyle().blackColor,
-              ),
-              onPressed: () {
-                title; //ชื่อรูปคลาว
-                selectPic; //ลิ้งค์รูปคาว
-              },
+      appBar: AppBar(
+        title: Text(this.title,
+            style: TextStyle(
+              color: MyStyle().blackColor,
+            )),
+        centerTitle: true,
+        backgroundColor: MyStyle().whiteColor,
+        automaticallyImplyLeading: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.file_download_outlined,
+              color: MyStyle().blackColor,
             ),
-            IconButton(
-              icon: Icon(
-                Icons.delete_outline,
-                color: MyStyle().deleteColor,
-              ),
-              onPressed: () {
-                title; //ชื่อรูปคลาว
-                selectPic; //ลิ้งค์รูปคาว
-              },
+            onPressed: () {
+              title; //ชื่อรูปคลาว
+              selectPic; //ลิ้งค์รูปคาว
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.delete_outline,
+              color: MyStyle().deleteColor,
             ),
-          ],
-          leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios_new,
-                color: MyStyle().blackColor,
-              ),
-              onPressed: () async {
-                user_file user0 = new user_file();
+            onPressed: () {
+              title; //ชื่อรูปคลาว
+              selectPic; //ลิ้งค์รูปคาว
+            },
+          ),
+        ],
+        leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: MyStyle().blackColor,
+            ),
+            onPressed: () async {
+              user_file user0 = new user_file();
 
-                await user0.getdata_user_file();
-                var user = await user0;
-                var ListImgCloud;
-                var listimageshow;
+              await user0.getdata_user_file();
+              var user = await user0;
+              var ListImgCloud;
+              var listimageshow;
 
-                //
-                if (await user.Login) {
-                  list_album la = await new list_album();
-                  await la.getimagefrom_api();
-                  print(
-                      'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-                  listimageshow = await la.listimageshow;
+              //
+              if (await user.Login) {
+                list_album la = await new list_album();
+                await la.getimagefrom_api();
+                print(
+                    'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
+                listimageshow = await la.listimageshow;
 
-                  listimagecloud listimgC = await new listimagecloud();
-                  ListImgCloud = await listimgC.getimagefrom_api();
-                  print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
-                  for (int i = 0; i < ListImgCloud.length; i++) {
+                listimagecloud listimgC = await new listimagecloud();
+                ListImgCloud = await listimgC.getimagefrom_api();
+                print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
+                /*for (int i = 0; i < ListImgCloud.length; i++) {
                     print(await ListImgCloud[i].geturlimage());
-                  }
-                }
+                  }*/
+              }
 
-                var Request_page = ShowImage(
-                  name: title,
-                  listimageshow: this.listimageshow,
-                );
+              var Request_page = ShowImage(
+                name: title,
+                listimageshow: this.listimageshow,
+              );
 
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Request_page));
-                print("ส่งชื่ออัลบั้มไปที่ ShowImage" + this.title);
-              }),
-        ),
-        body: Center(
-            child: InteractiveViewer(
-                clipBehavior: Clip.none,
-                //boundaryMargin: EdgeInsets.all(0),
-                minScale: 0.5,
-                maxScale: 4,
-                //scaleEnabled: false,
-                //constrained: false,
-                //onInteractionStart: (details) => print('Start interaction'),
-                //onInteractionUpdate: (details) => print('Update interaction'),
-                onInteractionEnd: (details) {
-                  print('End interaction');
-                  //reset();
-                },
-                transformationController: controller,
-                child: Ink.image(
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Request_page));
+              print("ส่งชื่ออัลบั้มไปที่ ShowImage" + this.title);
+            }),
+      ),
+      body: Center(
+          child: InteractiveViewer(
+              clipBehavior: Clip.none,
+              minScale: 0.5,
+              maxScale: 4,
+              onInteractionEnd: (details) {
+                print('End interaction');
+              },
+              transformationController: controller,
+              child: Ink.image(
                   //fit: BoxFit.cover,
-                  image: FileImage(File(selectPic)),
-                ))),
-      );
+                  image: FileImage(File(selectPic))))));
 
   void reset() {
     final animationReset = Matrix4Tween(
@@ -184,7 +184,7 @@ class SlideImage extends State<SlideImageS2> with TickerProviderStateMixin {
     controllerReset.forward();
   }
 }
- 
+
 
 
 

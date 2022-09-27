@@ -163,9 +163,9 @@ class _MyAppState5 extends State<FilePic> {
                       listimagecloud listimgC = await new listimagecloud();
                       ListImgCloud = await listimgC.getimagefrom_api();
                       print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
-                      for (int i = 0; i < ListImgCloud.length; i++) {
+                      /*for (int i = 0; i < ListImgCloud.length; i++) {
                         print(await ListImgCloud[i].geturlimage());
-                      }
+                      }*/
                     }
 
                     Navigator.push(
@@ -201,9 +201,9 @@ class _MyAppState5 extends State<FilePic> {
                     listimagecloud listimgC = await new listimagecloud();
                     ListImgCloud = await listimgC.getimagefrom_api();
                     print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
-                    for (int i = 0; i < ListImgCloud.length; i++) {
+                    /*for (int i = 0; i < ListImgCloud.length; i++) {
                       print(await ListImgCloud[i].geturlimage());
-                    }
+                    }*/
                   }
                   Navigator.push(
                       context,
