@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:project_photo_learn/Object/imagecloud.dart';
 import 'package:project_photo_learn/my_style.dart';
 import 'package:project_photo_learn/page/PagesF/PageClound/FileCloudPage.dart';
-import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/ImageSilederPage_Cloud.dart';
-import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/ImageSliderPage_Device.dart';
+import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/ImageSliderPage.dart';
 import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/SelectImageDevice.dart';
 import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/places_data.dart';
 import 'package:project_photo_learn/page/PagesF/first.dart';
@@ -99,14 +98,64 @@ class Allimages extends State<ShowImage> {
                 Icons.drive_file_move_outline,
                 color: MyStyle().blackColor,
               ),
-              onPressed: () {},
+              onPressed: () {
+                List<ImageData> imageListD = [];
+                List<ImageData> imageListC = [];
+                //imageList = ImageData.getImage();
+                for (int i = 0; i < this.listimageshow["device"].length; i++) {
+                  ImageData idt = ImageData(
+                      this.listimageshow["device"][i]['img'] as String,
+                      false,
+                      i);
+                  imageListD.add(idt);
+                }
+                for (int i = 0; i < this.listimageshow["cloud"].length; i++) {
+                  ImageData idt = ImageData(
+                      this.listimageshow["cloud"][i]['img'] as String,
+                      false,
+                      i);
+                  imageListC.add(idt);
+                }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SelectImageHomePage(
+                            imageListD: imageListD,
+                            imageListC: imageListC,
+                            iconselect: "move")));
+              },
             ),
             IconButton(
               icon: Icon(
-                Icons.delete_outlined,
-                color: MyStyle().deleteColor,
+                Icons.delete_outline_outlined,
+                color: MyStyle().blackColor,
               ),
-              onPressed: () {},
+              onPressed: () {
+                List<ImageData> imageListD = [];
+                List<ImageData> imageListC = [];
+                //imageList = ImageData.getImage();
+                for (int i = 0; i < this.listimageshow["device"].length; i++) {
+                  ImageData idt = ImageData(
+                      this.listimageshow["device"][i]['img'] as String,
+                      false,
+                      i);
+                  imageListD.add(idt);
+                }
+                for (int i = 0; i < this.listimageshow["cloud"].length; i++) {
+                  ImageData idtc = ImageData(
+                      this.listimageshow["cloud"][i]['img'] as String,
+                      false,
+                      i);
+                  imageListC.add(idtc);
+                }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SelectImageHomePage(
+                            imageListD: imageListD,
+                            imageListC: imageListC,
+                            iconselect: "delete")));
+              },
             ),
             IconButton(
               icon: Icon(
@@ -123,11 +172,12 @@ class Allimages extends State<ShowImage> {
                       i);
                   imageList.add(idt);
                 }
-                Navigator.push(
+                /* Navigator.push(
                     context,
-                    MaterialPageRoute(
+                   MaterialPageRoute(
                         builder: (context) =>
-                            SelectImageDevice(imageList: imageList)));
+                            SelectImageHomePage(imageList: imageList))
+                            );*/
               },
             ),
           ],
@@ -200,7 +250,7 @@ class _GridItem_Cloud extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SlideImageC(
+                        builder: (context) => SlideImage(
                             namealbumS: title,
                             selectpicS: img,
                             status: "cloud",
@@ -244,7 +294,7 @@ class _GridItem extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => SlideImageD(
+                  builder: (context) => SlideImage(
                       namealbumS: title,
                       selectpicS: img,
                       status: "device",

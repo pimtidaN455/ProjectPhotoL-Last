@@ -11,17 +11,17 @@ import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/ImagePage.dart';
 import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/places_data.dart';
 import 'package:project_photo_learn/page/PagesF/first.dart';
 
-class SlideImageD extends StatelessWidget {
+class SlideImage extends StatelessWidget {
   final String title = 'Interactive Viewer';
   var namealbumS;
   var selectpicS;
   var listimageshow;
   var status;
-  SlideImageD(
+  SlideImage(
       {required this.namealbumS,
       required this.selectpicS,
       required this.listimageshow,
-      required String status});
+      required this.status});
   @override
   Widget build(BuildContext context) => MaterialApp(
         title: title,
@@ -51,7 +51,7 @@ class SlideImageD2 extends StatefulWidget {
       title: namealbumS,
       selectPic: selectpicS,
       listimageshow: this.listimageshow,
-      status: status);
+      status: this.status);
 }
 
 class SlideImageDevice extends State<SlideImageD2>
@@ -102,7 +102,8 @@ class SlideImageDevice extends State<SlideImageD2>
             ),
             onPressed: () {
               title; //ชื่อรูปคลาว
-              selectPic; //ลิ้งค์รูปคาว
+              selectPic;
+              //ลิ้งค์รูปคาว
             },
           ),
           IconButton(
@@ -157,16 +158,27 @@ class SlideImageDevice extends State<SlideImageD2>
       ),
       body: Center(
           child: InteractiveViewer(
-              clipBehavior: Clip.none,
-              minScale: 0.5,
-              maxScale: 4,
-              onInteractionEnd: (details) {
-                print('End interaction');
-              },
-              transformationController: controller,
-              child: Ink.image(
-                  //fit: BoxFit.cover,
-                  image: FileImage(File(selectPic))))));
+        clipBehavior: Clip.none,
+        minScale: 0.5,
+        maxScale: 4,
+        onInteractionEnd: (details) {
+          print('End interaction');
+        },
+        transformationController: controller,
+        child: Stack(children: [
+          this.status == 'cloud' ? _getImageC(selectPic) : _getImageD(selectPic)
+        ]),
+      )));
+
+  _getImageD(url) => Ink.image(
+        image: FileImage(File(url)),
+      );
+
+  _getImageC(url) => CachedNetworkImage(
+      imageUrl: url,
+      imageBuilder: (context, imageProvider) {
+        return Ink.image(image: imageProvider);
+      });
 
   void reset() {
     final animationReset = Matrix4Tween(

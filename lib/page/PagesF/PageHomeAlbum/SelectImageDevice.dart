@@ -3,17 +3,30 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:project_photo_learn/my_style.dart';
 
-class SelectImageDevice extends StatefulWidget {
-  var imageList;
-  SelectImageDevice({required this.imageList});
+class SelectImageHomePage extends StatefulWidget {
+  var imageListD;
+  var imageListC;
+  var iconselect;
+  SelectImageHomePage(
+      {required this.imageListD,
+      required this.imageListC,
+      required this.iconselect});
+
   @override
-  _SelectImageDeviceState createState() =>
-      _SelectImageDeviceState(imageList: imageList);
+  _SelectImageDeviceState createState() => _SelectImageDeviceState(
+      imageListD: this.imageListD,
+      imageListC: this.imageListC,
+      iconselect: this.iconselect);
 }
 
-class _SelectImageDeviceState extends State<SelectImageDevice> {
-  var imageList;
-  _SelectImageDeviceState({required this.imageList});
+class _SelectImageDeviceState extends State<SelectImageHomePage> {
+  var imageListD;
+  var imageListC;
+  var iconselect;
+  _SelectImageDeviceState(
+      {required this.imageListD,
+      required this.imageListC,
+      required this.iconselect});
   @override
   void initState() {
     super.initState();
@@ -21,6 +34,12 @@ class _SelectImageDeviceState extends State<SelectImageDevice> {
 
   @override
   Widget build(BuildContext context) {
+    print("หน้าเลือกแล้วจ้า");
+    print(this.imageListD);
+    print(this.imageListC);
+    print(this.iconselect);
+    print("ค่าาาาาา");
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Select Device",
@@ -53,19 +72,19 @@ class _SelectImageDeviceState extends State<SelectImageDevice> {
             crossAxisCount: 3,
             crossAxisSpacing: 4.0,
             mainAxisSpacing: 4.0),
-        itemCount: imageList.length,
+        itemCount: imageListD.length + imageListC.length,
         itemBuilder: (builder, index) {
           return InkWell(
               onTap: () {
                 setState(() {
-                  imageList[index].isSelected = !imageList[index].isSelected;
+                  imageListD[index].isSelected = !imageListD[index].isSelected;
                 });
               },
               child: Stack(
                 children: [
-                  _getImage(imageList[index].imageURL),
+                  _getImage(imageListD[index].imageURL),
                   Opacity(
-                    opacity: imageList[index].isSelected ? 1 : 0,
+                    opacity: imageListD[index].isSelected ? 1 : 0,
                     child: Stack(
                       children: [
                         Container(
@@ -96,11 +115,11 @@ class _SelectImageDeviceState extends State<SelectImageDevice> {
         fit: BoxFit.cover,
         image: FileImage(File(url)),
       );
-  /*_getImage(url) => Image.network(
+  _getImageC(url) => Image.network(
         url,
         height: 500,
         fit: BoxFit.fitHeight,
-      );*/
+      );
 
   @override
   void dispose() {
