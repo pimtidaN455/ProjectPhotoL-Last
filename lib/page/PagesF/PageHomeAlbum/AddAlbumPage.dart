@@ -34,183 +34,189 @@ class Add_Album_PageState extends State<Add_Album_Page> {
   Widget build(BuildContext context) {
     screen = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Add Album",
-            style: TextStyle(
-              fontSize: 30,
-              color: MyStyle().blackColor,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Rajdhani',
-            ),
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text(
+          "Add Album",
+          style: TextStyle(
+            fontSize: 30,
+            color: MyStyle().blackColor,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Rajdhani',
           ),
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.black,
-            ),
-            onPressed: () async {
-              user_file user0 = new user_file();
-              await user0.getdata_user_file();
-              var user = await user0;
-              var ListImgCloud;
-              var listimageshow;
+        ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.black,
+          ),
+          onPressed: () async {
+            user_file user0 = new user_file();
+            await user0.getdata_user_file();
+            var user = await user0;
 
-              if (await user.Login) {
-                list_album la = new list_album();
-                var ListImageDevice = await la.getimagefrom_api();
-                print(
-                    'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
-                print(await la.listimageshow_device);
-                listimagecloud listimgC = new listimagecloud();
-                ListImgCloud = await listimgC.getimagefrom_api();
-                print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
-                for (int i = 0; i < ListImgCloud.length; i++) {
+            var ListImgCloud;
+            var listimageshow;
+            if (await user.Login) {
+              list_album la = new list_album();
+              var ListImageDevice = await la.getimagefrom_api();
+              print(
+                  'LAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLaLAAaaaaaaaLa');
+              //print(await la.listimageshow_device);
+              listimageshow = await la.listimageshow;
+
+              listimagecloud listimgC = new listimagecloud();
+              ListImgCloud = await listimgC.getimagefrom_api();
+              print('\\\\\\\\\\\\\\\\\List\\\\\\\\\\\\\\\\');
+              /*for (int i = 0; i < ListImgCloud.length; i++) {
                   print(await ListImgCloud[i].gettoString());
-                }
-              }
+                }*/
+            }
 
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => FirstState(
-                          page: 0,
-                          user: user,
-                          listimageshow: listimageshow,
-                          ListImgCloud: ListImgCloud)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => FirstState(
+                        page: 0,
+                        user: user,
+                        listimageshow: listimageshow,
+                        ListImgCloud: ListImgCloud)));
+          },
+        ),
+        backgroundColor: MyStyle().whiteColor,
+      ),
+      body: SingleChildScrollView(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          "\n   Name of subject",
+          style: TextStyle(
+            fontSize: 25,
+            color: MyStyle().blackColor,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Rajdhani',
+          ),
+        ),
+        Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+            child: Form(
+              key: _fromKey,
+              child: Column(
+                //mainAxisSize: MainAxisSize.min,
+                children: [
+                  AddNameSubJ(),
+                ],
+              ),
+            )),
+        SizedBox(
+          height: 5,
+        ),
+        Text(
+          '   Add Desription',
+          style: TextStyle(
+            fontSize: 25,
+            color: MyStyle().blackColor,
+            fontWeight: FontWeight.bold,
+            //fontStyle: FontStyle.normal,
+            fontFamily: 'Rajdhani',
+          ),
+        ),
+        Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+            child: Form(
+              key: _fromKey2,
+              child: Column(
+                //mainAxisSize: MainAxisSize.min,
+                children: [
+                  AddDesription(),
+                ],
+              ),
+            )),
+        Text(
+          '   Add keyword',
+          style: TextStyle(
+            fontSize: 25,
+            color: MyStyle().blackColor,
+            fontWeight: FontWeight.bold,
+            //fontStyle: FontStyle.normal,
+            fontFamily: 'Rajdhani',
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: TypeAheadField(
+            textFieldConfiguration: TextFieldConfiguration(
+              controller: Add_Keyword_SubJ,
+              onEditingComplete: () {
+                controller.listTags.add(Add_Keyword_SubJ.text);
+                Add_Keyword_SubJ.clear();
+              },
+              autofocus: false,
+              style: TextStyle(fontSize: 20),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Tag',
+                //contentPadding: EdgeInsets.symmetric(vertical: 2),
+                prefixIcon: Icon(Icons.tag),
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    if (Add_Keyword_SubJ.text != "") {
+                      controller.listTags.add(Add_Keyword_SubJ.text);
+                    }
+                    Add_Keyword_SubJ.clear();
+                  },
+                  icon: const Icon(Icons.add),
+                ),
+                enabledBorder:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
+              ),
+            ),
+            suggestionsCallback: (String pattern) {
+              return suggestTag2.where(
+                  (e) => e.toLowerCase().contains(pattern.toLowerCase()));
+            },
+            onSuggestionSelected: (String suggestion) =>
+                controller.listTags.add(suggestion),
+            itemBuilder: (BuildContext context, Object? itemData) {
+              return ListTile(
+                leading: Icon(Icons.tag),
+                title: Text(itemData.toString()),
+              );
             },
           ),
-          backgroundColor: MyStyle().whiteColor,
         ),
-        body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            "\n   Name of subject",
-            style: TextStyle(
-              fontSize: 25,
-              color: MyStyle().blackColor,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Rajdhani',
-            ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          "   # ที่คุณต้องการเพิ่ม ",
+          style: TextStyle(
+            fontSize: 20,
+            color: MyStyle().blackColor,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Rajdhani',
           ),
-          Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-              child: Form(
-                key: _fromKey,
-                child: Column(
-                  //mainAxisSize: MainAxisSize.min,
-                  children: [
-                    AddNameSubJ(),
-                  ],
-                ),
+        ),
+        Obx(() => controller.listTags.length == 0
+            ? Center(
+                child: Text('\n No tag'),
+              )
+            : Wrap(
+                children: controller.listTags
+                    .map((element) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Chip(
+                            label: Text(element),
+                            deleteIcon: Icon(Icons.clear),
+                            onDeleted: () =>
+                                controller.listTags.remove(element),
+                          ),
+                        ))
+                    .toList(),
               )),
-          SizedBox(
-            height: 5,
-          ),
-          Text(
-            '   Add Desription',
-            style: TextStyle(
-              fontSize: 25,
-              color: MyStyle().blackColor,
-              fontWeight: FontWeight.bold,
-              //fontStyle: FontStyle.normal,
-              fontFamily: 'Rajdhani',
-            ),
-          ),
-          Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-              child: Form(
-                key: _fromKey2,
-                child: Column(
-                  //mainAxisSize: MainAxisSize.min,
-                  children: [
-                    AddDesription(),
-                  ],
-                ),
-              )),
-          Text(
-            '   Add keyword',
-            style: TextStyle(
-              fontSize: 25,
-              color: MyStyle().blackColor,
-              fontWeight: FontWeight.bold,
-              //fontStyle: FontStyle.normal,
-              fontFamily: 'Rajdhani',
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: TypeAheadField(
-              textFieldConfiguration: TextFieldConfiguration(
-                controller: Add_Keyword_SubJ,
-                onEditingComplete: () {
-                  controller.listTags.add(Add_Keyword_SubJ.text);
-                  Add_Keyword_SubJ.clear();
-                },
-                autofocus: false,
-                style: TextStyle(fontSize: 20),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Tag',
-                  //contentPadding: EdgeInsets.symmetric(vertical: 2),
-                  prefixIcon: Icon(Icons.tag),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      if (Add_Keyword_SubJ.text != "") {
-                        controller.listTags.add(Add_Keyword_SubJ.text);
-                      }
-                      Add_Keyword_SubJ.clear();
-                    },
-                    icon: const Icon(Icons.add),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25)),
-                ),
-              ),
-              suggestionsCallback: (String pattern) {
-                return suggestTag2.where(
-                    (e) => e.toLowerCase().contains(pattern.toLowerCase()));
-              },
-              onSuggestionSelected: (String suggestion) =>
-                  controller.listTags.add(suggestion),
-              itemBuilder: (BuildContext context, Object? itemData) {
-                return ListTile(
-                  leading: Icon(Icons.tag),
-                  title: Text(itemData.toString()),
-                );
-              },
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            "   # ที่คุณต้องการเพิ่ม ",
-            style: TextStyle(
-              fontSize: 20,
-              color: MyStyle().blackColor,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Rajdhani',
-            ),
-          ),
-          Obx(() => controller.listTags.length == 0
-              ? Center(
-                  child: Text('\n No tag'),
-                )
-              : Wrap(
-                  children: controller.listTags
-                      .map((element) => Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Chip(
-                              label: Text(element),
-                              deleteIcon: Icon(Icons.clear),
-                              onDeleted: () =>
-                                  controller.listTags.remove(element),
-                            ),
-                          ))
-                      .toList(),
-                )),
-          buttonaddbum(),
-        ]));
+        buttonaddbum(),
+      ])),
+    );
   }
 
   Container AddNameSubJ() {
