@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:project_photo_learn/Object/imagecloud.dart';
 import 'package:project_photo_learn/my_style.dart';
 import 'package:project_photo_learn/page/PagesF/PageClound/FileCloudPage.dart';
+import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/Edit_Album.dart';
 import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/ImageSliderPage.dart';
 import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/SelectImageDevice.dart';
 import 'package:project_photo_learn/page/PagesF/PageHomeAlbum/places_data.dart';
@@ -163,21 +164,11 @@ class Allimages extends State<ShowImage> {
                 color: MyStyle().blackColor,
               ),
               onPressed: () {
-                List<ImageData> imageList = [];
-                //imageList = ImageData.getImage();
-                for (int i = 0; i < this.listimageshow["device"].length; i++) {
-                  ImageData idt = ImageData(
-                      this.listimageshow["device"][i]['img'] as String,
-                      false,
-                      i);
-                  imageList.add(idt);
-                }
-                /* Navigator.push(
+                Navigator.push(
                     context,
-                   MaterialPageRoute(
+                    MaterialPageRoute(
                         builder: (context) =>
-                            SelectImageHomePage(imageList: imageList))
-                            );*/
+                            Edit_Album_Page(namebum: this.name)));
               },
             ),
           ],
