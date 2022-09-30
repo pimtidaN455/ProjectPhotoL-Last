@@ -41,74 +41,35 @@ class _SelectImageDeviceState extends State<SelectImageHomePage> {
     print("ค่าาาาาา");
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Select Device",
-            style: TextStyle(
-              color: MyStyle().whiteColor,
-            )),
-        centerTitle: false,
-        backgroundColor: MyStyle().blackColor,
-        automaticallyImplyLeading: true,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.file_download_outlined,
-              color: MyStyle().addColor,
+        appBar: AppBar(
+          title: Text("Select Device",
+              style: TextStyle(
+                color: MyStyle().whiteColor,
+              )),
+          centerTitle: false,
+          backgroundColor: MyStyle().blackColor,
+          automaticallyImplyLeading: true,
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.file_download_outlined,
+                color: MyStyle().addColor,
+              ),
+              onPressed: () {},
             ),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.delete_outlined,
-              color: MyStyle().deleteColor,
+            IconButton(
+              icon: Icon(
+                Icons.delete_outlined,
+                color: MyStyle().deleteColor,
+              ),
+              onPressed: () {},
             ),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 1,
-            crossAxisCount: 3,
-            crossAxisSpacing: 4.0,
-            mainAxisSpacing: 4.0),
-        itemCount: imageListD.length + imageListC.length,
-        itemBuilder: (builder, index) {
-          return InkWell(
-              onTap: () {
-                setState(() {
-                  imageListD[index].isSelected = !imageListD[index].isSelected;
-                });
-              },
-              child: Stack(
-                children: [
-                  _getImage(imageListD[index].imageURL),
-                  Opacity(
-                    opacity: imageListD[index].isSelected ? 1 : 0,
-                    child: Stack(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          color: Colors.black38,
-                        ),
-                        Center(
-                          child: CircleAvatar(
-                            backgroundColor: Color.fromARGB(255, 255, 255, 255),
-                            child: Icon(
-                              Icons.check,
-                              color: Color.fromARGB(255, 0, 0, 0),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ));
-        },
-      ),
-    );
+          ],
+        ),
+        body:
+            //_Grid_Cloud(imageListC: this.imageListC, imageListD: this.imageListD),
+            _Grid_Cloud(
+                imageListC: this.imageListC, imageListD: this.imageListD));
   }
 
   _getImage(url) => Ink.image(
@@ -120,6 +81,96 @@ class _SelectImageDeviceState extends State<SelectImageHomePage> {
         height: 500,
         fit: BoxFit.fitHeight,
       );
+
+  _Grid_Cloud({required imageListC, required imageListD}) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio: 1,
+          crossAxisCount: 3,
+          crossAxisSpacing: 4.0,
+          mainAxisSpacing: 4.0),
+      itemCount: imageListC.length,
+      itemBuilder: (builder, index) {
+        return InkWell(
+            onTap: () {
+              setState(() {
+                imageListC[index].isSelected = !imageListC[index].isSelected;
+              });
+            },
+            child: Stack(
+              children: [
+                _getImageC(this.imageListC[index].imageURL),
+                Opacity(
+                  opacity: imageListC[index].isSelected ? 1 : 0,
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: Colors.black38,
+                      ),
+                      Center(
+                        child: CircleAvatar(
+                          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                          child: Icon(
+                            Icons.check,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ));
+      },
+    );
+  }
+
+  _Grid_Device({required imageListC, required imageListD}) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio: 1,
+          crossAxisCount: 3,
+          crossAxisSpacing: 4.0,
+          mainAxisSpacing: 4.0),
+      itemCount: imageListD.length,
+      itemBuilder: (builder, index) {
+        return InkWell(
+            onTap: () {
+              setState(() {
+                imageListD[index].isSelected = !imageListD[index].isSelected;
+              });
+            },
+            child: Stack(
+              children: [
+                _getImage(this.imageListD[index].imageURL),
+                Opacity(
+                  opacity: imageListD[index].isSelected ? 1 : 0,
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: Colors.black38,
+                      ),
+                      Center(
+                        child: CircleAvatar(
+                          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                          child: Icon(
+                            Icons.check,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ));
+      },
+    );
+  }
 
   @override
   void dispose() {
